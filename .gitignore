@@ -6,3 +6,6 @@ coverage/
 !.env.example
 dist/
 *.tsbuildinfo
+.next/
+playwright-report/
+test-results/

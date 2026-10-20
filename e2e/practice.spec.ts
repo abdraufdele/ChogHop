@@ -89,6 +89,36 @@ test('recovers when the initial practice session cannot be opened', async ({ pag
   await expect(page.getByRole('heading', { name: 'A little light to pass on.' })).toBeVisible();
 });
 
+test('restores a committed move when its successful response was lost', async ({ page }) => {
+  await page.goto('/');
+  await pickMark(page, 'Star', 'South');
+  await page.route('**/api/practice', async route => {
+    if (route.request().method() !== 'POST') { await route.continue(); return; }
+    const committed = await route.fetch();
+    expect(committed.status()).toBe(200);
+    await route.abort('failed');
+  });
+  await page.getByRole('button', { name: 'Prepare the signal' }).click();
+  await expect(page.locator('.error-message')).toContainText('Your choices are still here');
+  await page.unroute('**/api/practice');
+  await page.getByRole('button', { name: 'Prepare the signal' }).click();
+  await expect(page.getByRole('heading', { name: 'A little light to pass on.' })).toBeVisible();
+  await expect(page.locator('.error-message')).toContainText('latest step');
+});
+
+test('does not replace a saved run during a storage outage', async ({ page }) => {
+  await page.goto('/');
+  await pickMark(page, 'Star', 'South');
+  await page.getByRole('button', { name: 'Prepare the signal' }).click();
+  await expect(page.getByRole('heading', { name: 'A little light to pass on.' })).toBeVisible();
+  await page.route('**/api/practice', route => route.fulfill({ status: 503, contentType: 'application/json', body: '{"error":"storage_unavailable"}' }));
+  await page.reload();
+  await expect(page.locator('.error-message')).toContainText('won’t replace your saved run');
+  await page.unroute('**/api/practice');
+  await page.getByRole('button', { name: 'Reload practice' }).click();
+  await expect(page.getByRole('heading', { name: 'A little light to pass on.' })).toBeVisible();
+});
+
 test('supports keyboard radio controls, narrow screens and reduced motion', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.emulateMedia({ reducedMotion: 'reduce' });

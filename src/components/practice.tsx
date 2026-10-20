@@ -16,6 +16,8 @@ const messages: Record<string, string> = {
   too_many_attempts: 'Give the lantern a moment. Wait 30 seconds, then try your deduction again.',
   wrong_stage: 'That step has already moved on. Reload this practice to pick up where you left off.',
   network: 'The observatory couldn’t be reached. Your choices are still here. Try again when your connection returns.',
+  storage_unavailable: 'Your saved practice can’t be reached just now. Your choices are still here. Please try again; we won’t replace your saved run.',
+  incompatible_content: 'Your saved practice needs a field-note check. We’ve kept it safe. Please try again after the observatory is updated.',
 };
 
 function MarkPicker({ glyph, bearing, onGlyph, onBearing, disabled }: {
@@ -41,6 +43,7 @@ function PassportStamp() {
 
 export function Practice({ initial }: { initial: KeeperView }) {
   const [snapshot, setSnapshot] = useState<PracticeSnapshot | null>(null);
+  const [interactive, setInteractive] = useState(false);
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -55,11 +58,12 @@ export function Practice({ initial }: { initial: KeeperView }) {
   const keeper = snapshot?.stage === 'keeper' ? snapshot.puzzle : initial;
 
   useEffect(() => {
+    setInteractive(true);
     const controller = new AbortController();
     fetch('/api/practice', { cache: 'no-store', signal: AbortSignal.any([controller.signal, AbortSignal.timeout(12_000)]) })
       .then(async response => {
-        if (!response.ok) throw new Error('network');
         const reply: PracticeReply = await response.json();
+        if (!response.ok) { setError(messages[reply.error ?? ''] ?? messages.network!); return; }
         if (!reply.snapshot) throw new Error('network');
         setSnapshot(reply.snapshot);
         if (reply.restarted) setNotice('Your earlier practice ended. A fresh chart is ready.');
@@ -117,7 +121,7 @@ export function Practice({ initial }: { initial: KeeperView }) {
       <main>
         <section className="chapter-intro" aria-labelledby="chapter-title"><div><div className="eyebrow"><span className="tiny-star" aria-hidden="true" /> EXPEDITION 001 <span className="eyebrow-rule" /> A LITTLE MYSTERY FOR TWO</div><h1 id="chapter-title">The Last <span>Lantern.</span></h1></div><div className="intro-copy"><span className="practice-badge">WALLET-FREE PRACTICE</span><p>The lighthouse has gone quiet.{' '}<br />One Keeper. One Runner.{' '}<br /><span>A small signal can bring it home.</span></p></div></section>
         <div className="expedition-layout">
-          <div className="scene-column"><Observatory stage={stage} selected={glyph} onInspect={inspect} />
+          <div className="scene-column"><Observatory stage={stage} selected={glyph} onInspect={inspect} interactive={interactive} />
             <div className="scene-note" role="status" aria-live="polite"><span className="note-index">FIELD NOTE /</span><p>{inspection || 'Explore the chart, lens and lanterns. Everything you need is already in the room.'}</p></div>
             <div className="practice-disclosure"><Pip /><p><strong>Meet Pip, your practice companion.</strong><br />An original sample character. You’ll try both roles yourself; no wallet, NFT or real invitation is involved.</p></div>
           </div>
@@ -156,7 +160,7 @@ export function Practice({ initial }: { initial: KeeperView }) {
             {!snapshot && !busy && !error && <button className="text-button" onClick={() => void request()}>Open practice →</button>}
           </section>
         </div>
-        <details className="field-guide"><summary><span>FIRST TIME AT THE CLUB?</span> A field guide to this little relay <span aria-hidden="true">+</span></summary><div><p><strong>Keeper / the chart.</strong> Deduce the missing glyph and arrow. Choose a direct or reflected treatment to prepare the received signal.</p><p><strong>Runner / the lantern.</strong> Use the two environmental examples to infer how the received signal maps back to a lantern and its bearing. Each example follows the same rule.</p><p><strong>This is practice.</strong> You try both roles with a sample character. Progress is temporary and kept apart from live play. Real ownership, guest permissions and app-managed passport history arrive in later slices.</p></div></details>
+        <details className="field-guide"><summary><span>FIRST TIME AT THE CLUB?</span> A field guide to this little relay <span aria-hidden="true">+</span></summary><div><p><strong>Keeper / the chart.</strong> Deduce the missing glyph and arrow. Choose a direct or reflected treatment to prepare the received signal.</p><p><strong>Runner / the lantern.</strong> Use the two environmental examples to infer how the received signal maps back to a lantern and its bearing. Each example follows the same rule.</p><p><strong>This is practice.</strong> You try both roles with a sample character. Your run is saved separately from live history and can be resumed in this browser for two hours. Real ownership, guest permissions and NFT passport entries arrive in later slices.</p></div></details>
       </main>
       <footer className="site-footer"><span>ChogHop <span className="footer-dot">/</span> MADE FOR SMALL ADVENTURES TOGETHER</span><span>PRACTICE ONLY · NO WALLET REQUIRED</span></footer>
     </div>

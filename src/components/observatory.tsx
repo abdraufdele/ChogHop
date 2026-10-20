@@ -3,9 +3,9 @@
 import { Pip, RoleIcon } from './symbols';
 import type { Glyph } from '../puzzle/grammar';
 
-type Props = { stage: string; selected: Glyph | null; onInspect: (object: 'chart' | 'lens' | 'lanterns') => void };
+type Props = { stage: string; selected: Glyph | null; onInspect: (object: 'chart' | 'lens' | 'lanterns') => void; interactive: boolean };
 
-export function Observatory({ stage, selected, onInspect }: Props) {
+export function Observatory({ stage, selected, onInspect, interactive }: Props) {
   const lit = stage === 'complete';
   return <section className={`observatory ${lit ? 'is-lit' : ''} ${stage === 'handoff' ? 'is-transmitting' : ''}`} aria-label="Moonlit observatory">
     <div className="scene-caption"><span className="coordinate-cross">+</span> THE TIDELIGHT OBSERVATORY <span>STATION 01</span></div>
@@ -48,9 +48,9 @@ export function Observatory({ stage, selected, onInspect }: Props) {
       <path d="m350 502 27 6m-18-18 30 7m242-214 22 4m-12-15 23 4" stroke="#817082" strokeWidth="2" />
       <g transform="translate(795 560)" stroke="#BBA8F5"><circle r="23" stroke="#48405F" /><path d="M0-31v62m-31-31h62m-62 0 31-10 31 10-31 10Z" /><path d="m0-23 5 23-5-5-5 5Z" fill="#BBA8F5" /></g>
     </svg>
-    <button className="scene-hotspot chart-hotspot" onClick={() => onInspect('chart')}><RoleIcon role="keeper" /><span>Star chart</span></button>
-    <button className="scene-hotspot lens-hotspot" onClick={() => onInspect('lens')}><span className="lens-symbol" aria-hidden="true" /><span>Signal lens</span></button>
-    <button className="scene-hotspot lantern-hotspot" onClick={() => onInspect('lanterns')}><RoleIcon role="runner" /><span>Three lanterns</span></button>
+    <button className="scene-hotspot chart-hotspot" disabled={!interactive} onClick={() => onInspect('chart')}><RoleIcon role="keeper" /><span>Star chart</span></button>
+    <button className="scene-hotspot lens-hotspot" disabled={!interactive} onClick={() => onInspect('lens')}><span className="lens-symbol" aria-hidden="true" /><span>Signal lens</span></button>
+    <button className="scene-hotspot lantern-hotspot" disabled={!interactive} onClick={() => onInspect('lanterns')}><RoleIcon role="runner" /><span>Three lanterns</span></button>
     <div className="scene-footnote"><span className="sample-dot" /> PIP · ORIGINAL SAMPLE CHARACTER <span>Listen to the clues.</span></div>
   </section>;
 }

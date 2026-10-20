@@ -1,72 +1,90 @@
 import 'server-only';
-import { randomUUID } from 'node:crypto';
-import { applyAction, createRun, keeperView, runnerView } from '../puzzle/engine';
-import type { Run } from '../puzzle/engine';
+import { createHash, randomBytes, randomUUID } from 'node:crypto';
+import { applyAction, keeperView, runnerView } from '../puzzle/engine';
 import { isRecord } from '../puzzle/grammar';
+import { CONTENT_VERSION, decodePractice } from '../persistence/record';
+import type { SavedPractice, SavedState } from '../persistence/record';
+import { StorageUnavailable, supabaseRpc } from '../persistence/rpc.server';
+import type { Rpc } from '../persistence/rpc.server';
 import type { PracticeSnapshot } from './types';
 
-type Session = { run: Run; accepted: boolean; expiresAt: number; attempts: number[] };
 type Failure = { ok: false; error: string; status: number; snapshot?: PracticeSnapshot };
 type Success = { ok: true; snapshot: PracticeSnapshot };
 
-function project(session: Session): PracticeSnapshot {
-  const { run, expiresAt } = session;
-  const base = { mode: 'practice' as const, expiresAt, revision: run.revision };
-  if (run.stage === 'keeper') return { ...base, stage: 'keeper', puzzle: keeperView(run) };
+const tokenHash = (token: string) => createHash('sha256').update(token).digest('hex');
+const validToken = (token: string) => /^[A-Za-z0-9_-]{43}$/.test(token);
+
+function project(record: SavedPractice): PracticeSnapshot {
+  const { run, accepted } = record.state;
+  const base = { mode: 'practice' as const, runId: record.id, contentVersion: CONTENT_VERSION, expiresAt: record.expiresAt, revision: record.revision };
+  if (run.stage === 'keeper') return { ...base, stage: 'keeper', puzzle: { ...keeperView(run), revision: record.revision } };
   if (run.stage === 'complete') return {
     ...base, stage: 'complete', restoration: { ...run.restoration }, signal: { ...run.signal }, treatment: run.treatment,
   };
-  if (!session.accepted) return {
+  if (!accepted) return {
     ...base, stage: 'handoff', prepared: { ...run.keeperMark }, signal: { ...run.signal }, treatment: run.treatment,
   };
-  return { ...base, stage: 'runner', puzzle: runnerView(run) };
+  return { ...base, stage: 'runner', puzzle: { ...runnerView(run), revision: record.revision } };
 }
 
-/** Ephemeral practice only. Never use this process-local store for live runs or permissions. */
-export function createPracticeStore(options: { now?: () => number; ttlMs?: number; capacity?: number } = {}) {
-  const now = options.now ?? Date.now;
-  const ttl = options.ttlMs ?? 2 * 60 * 60 * 1000;
-  const capacity = options.capacity ?? 256;
-  const sessions = new Map<string, Session>();
-  const read = (id: string): Session | undefined => {
-    const session = sessions.get(id);
-    if (session && session.expiresAt > now()) return session;
-    sessions.delete(id);
+/** Each move is validated here, then committed with its event by one locked Postgres RPC. */
+export function createPracticeStore(rpc: Rpc = supabaseRpc, environment: SavedPractice['environment'] = 'development') {
+  const load = async (id: string) => {
+    if (!validToken(id)) return undefined;
+    const result = await rpc('choghop_practice_load', { p_token_hash: tokenHash(id) });
+    return result === null ? undefined : decodePractice(result);
   };
   return {
-    start() {
-      for (const id of sessions.keys()) read(id);
-      if (sessions.size >= capacity) sessions.delete(sessions.keys().next().value!);
-      const id = randomUUID();
-      const session: Session = { run: createRun('last-lantern-01'), accepted: false, expiresAt: now() + ttl, attempts: [] };
-      sessions.set(id, session);
-      return { id, snapshot: project(session) };
+    async start(previousId?: string) {
+      const id = randomBytes(32).toString('base64url');
+      const result = await rpc('choghop_practice_start', {
+        p_token_hash: tokenHash(id), p_previous_token_hash: previousId && validToken(previousId) ? tokenHash(previousId) : null,
+        p_run_id: randomUUID(), p_actor_id: randomUUID(), p_environment: environment,
+      });
+      return { id, snapshot: project(decodePractice(result)) };
     },
-    resume(id: string) { const session = read(id); return session ? project(session) : undefined; },
-    remove(id: string) { sessions.delete(id); },
-    submit(id: string, revision: unknown, action: unknown): Success | Failure {
-      const session = read(id);
-      if (!session) return { ok: false, error: 'session_expired', status: 410 };
+    async resume(id: string) { const record = await load(id); return record ? project(record) : undefined; },
+    async submit(id: string, revision: unknown, action: unknown): Promise<Success | Failure> {
       if (typeof revision !== 'number' || !Number.isSafeInteger(revision) || revision < 0) {
         return { ok: false, error: 'invalid_revision', status: 400 };
       }
-      if (revision !== session.run.revision) return { ok: false, error: 'stale_revision', status: 409, snapshot: project(session) };
+      const record = await load(id);
+      if (!record) return { ok: false, error: 'session_expired', status: 410 };
+      if (revision !== record.revision) return { ok: false, error: 'stale_revision', status: 409, snapshot: project(record) };
+      const { run, accepted } = record.state;
+      let state: SavedState | null = null;
+      let event: string | null = null;
+      let error: string | null = null;
+      let payload: Record<string, unknown> = {};
       if (isRecord(action) && action.type === 'accept_ticket') {
-        if (session.run.stage !== 'runner' || session.accepted) return { ok: false, error: 'wrong_stage', status: 409 };
-        session.accepted = true;
-        return { ok: true, snapshot: project(session) };
+        if (run.stage !== 'runner' || accepted) error = 'wrong_stage';
+        else { state = { run, accepted: true }; event = 'practice_runner_started'; }
+      } else if (run.stage === 'runner' && !accepted) error = 'accept_ticket_first';
+      else {
+        const result = applyAction(run, run.revision, action);
+        if (!result.ok) error = result.code;
+        else {
+          state = { run: result.run, accepted };
+          event = result.event.type === 'signal_prepared' ? 'practice_signal_prepared' : 'practice_completed';
+          payload = result.event.type === 'signal_prepared'
+            ? { treatment: result.event.treatment, mark: result.event.mark, signal: result.event.signal }
+            : { mark: result.event.mark };
+        }
       }
-      if (session.run.stage === 'runner' && !session.accepted) return { ok: false, error: 'accept_ticket_first', status: 409 };
-      session.attempts = session.attempts.filter(time => time > now() - 30_000);
-      if (session.attempts.length >= 12) return { ok: false, error: 'too_many_attempts', status: 429 };
-      session.attempts.push(now());
-      const result = applyAction(session.run, revision, action);
-      if (!result.ok) return { ok: false, error: result.code, status: 422 };
-      session.run = result.run;
-      return { ok: true, snapshot: project(session) };
+      const result = await rpc('choghop_practice_commit', {
+        p_token_hash: tokenHash(id), p_expected_revision: revision, p_state: state,
+        p_event: event, p_payload: payload, p_error: error,
+      });
+      if (!isRecord(result)) throw new StorageUnavailable();
+      if (typeof result.error === 'string' && typeof result.status === 'number') return {
+        ok: false, error: result.error, status: result.status,
+        ...(result.record ? { snapshot: project(decodePractice(result.record)) } : {}),
+      };
+      return { ok: true, snapshot: project(decodePractice(result.record)) };
     },
   };
 }
 
-const globalPractice = globalThis as typeof globalThis & { choghopPractice?: ReturnType<typeof createPracticeStore> };
-export const practiceStore = globalPractice.choghopPractice ??= createPracticeStore();
+const environment = process.env.CHOGHOP_ENVIRONMENT ?? (process.env.NODE_ENV === 'production' ? 'production' : 'development');
+export const practiceStore = createPracticeStore(supabaseRpc,
+  environment === 'test' || environment === 'production' ? environment : 'development');

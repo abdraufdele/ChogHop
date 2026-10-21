@@ -11,7 +11,7 @@ const origin = 'http://127.0.0.1:3000';
 const cwd = fileURLToPath(new URL('../../', import.meta.url));
 const env = { ...process.env, SUPABASE_URL: 'http://127.0.0.1:54329',
   SUPABASE_SERVICE_ROLE_KEY: 'choghop-test-key', NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'choghop-test-key',
-  CHOGHOP_ENVIRONMENT: 'test', CHOGHOP_APP_ORIGIN: origin,
+  CHOGHOP_ENVIRONMENT: 'test', CHOGHOP_FIXTURE_PREVIEW: '1', CHOGHOP_APP_ORIGIN: origin,
   MONAD_CHAIN_ID: '10143', MONAD_RPC_URL: 'http://127.0.0.1:54329/chain',
   CHOG_COLLECTION_ADDRESS: collection, CHOG_COLLECTION_STANDARD: 'ERC721',
   CHOG_DEPLOYMENT_BLOCK: '0', CHOG_MEDIA_HOSTS: '', CHOGHOP_TEST_DB_PORT: '54329' };
@@ -22,7 +22,7 @@ const provider = `(() => {
   const selected = new URL(location.href).searchParams.get('fixture_role');
   const previous = localStorage.getItem('choghop.fixture.role');
   const role = selected === 'runner' ? 'runner' : selected === 'keeper' ? 'keeper' : previous || 'keeper';
-  if (previous !== role) {
+  if (previous !== role || localStorage.getItem('choghop.fixture.bridge') !== '2') {
     for (const cookie of document.cookie.split(';')) {
       const name = cookie.trim().split('=')[0];
       if (name.startsWith('sb-127-')) document.cookie = name + '=; Max-Age=0; Path=/; SameSite=Lax';
@@ -30,7 +30,8 @@ const provider = `(() => {
     for (const key of Object.keys(localStorage)) if (key.startsWith('wagmi')) localStorage.removeItem(key);
   }
   localStorage.setItem('choghop.fixture.role', role);
-  window.ethereum = { isMetaMask: true, on() {}, removeListener() {},
+  localStorage.setItem('choghop.fixture.bridge', '2');
+  window.choghopFixtureWallet = { on() {}, removeListener() {},
     async request({method, params = []}) {
       const response = await fetch('/__fixture/wallet', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({role, method, params})});
       const result = await response.json();

@@ -18,7 +18,7 @@ import { RoleIcon, SignalMark } from './symbols';
 import type { KeeperView, RunnerView } from '../puzzle/engine';
 import type { Bearing, Glyph, Treatment } from '../puzzle/grammar';
 
-export type RelaySettings = {chainId:143|10143;supabaseUrl:string;publishableKey:string;configured:boolean;collection:string;test?:boolean};
+export type RelaySettings = {chainId:143|10143;supabaseUrl:string;publishableKey:string;configured:boolean;collection:string;test?:boolean;fixtureWallet?:boolean};
 type Snapshot={runId:string;revision:number;stage:string;puzzle:KeeperView|RunnerView|null;chart?:KeeperView;tokenId:string;status?:string;owner?:string;guest?:string;expiresAt?:number;permissionId?:string;expedition:string;memoryChoice:'direct'|'reflected'|null;passport:Passport|null};
 const messages:Record<string,string>={
   ownership_syncing:'Checking the Chog’s transfer history. Select it again to continue from the saved checkpoint.',
@@ -50,7 +50,11 @@ export function Relay({settings}: {settings:RelaySettings}) {
   const [config]=useState(()=>{
     const chain=walletChain(settings.chainId);
     // No client chain reads. Ownership uses only the configured server RPC.
-    return createConfig({chains:[chain],connectors:[injected()],transports:{143:http(),10143:http()},ssr:true});
+    // Only the local development launcher selects this dedicated provider. Installed
+    // wallet extensions and their discovery announcements must not replace it.
+    const connector=settings.fixtureWallet?injected({target:{id:'choghop-fixture',name:'ChogHop Test Wallet',
+      provider:()=>typeof window==='undefined'?undefined:(window as Window & {choghopFixtureWallet?:EIP1193Provider}).choghopFixtureWallet}}):injected();
+    return createConfig({chains:[chain],connectors:[connector],multiInjectedProviderDiscovery:!settings.fixtureWallet,transports:{143:http(),10143:http()},ssr:true});
   });
   return <WagmiProvider config={config}><QueryClientProvider client={query}><RelayRoom settings={settings}/></QueryClientProvider></WagmiProvider>;
 }

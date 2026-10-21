@@ -5,7 +5,8 @@ import { walletIdentity } from './identity';
 import { RelayError } from '../relay/errors';
 
 export async function authenticate(request: NextRequest,chainId: number) {
-  const url=process.env.SUPABASE_URL, key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  const {NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:key}=process.env;
+  const url=process.env.SUPABASE_URL;
   if (!url || !key) throw new RelayError('auth_unavailable',503);
   const parsed=new URL(url);
   const localTest=process.env.CHOGHOP_ENVIRONMENT==='test' && parsed.hostname==='127.0.0.1';

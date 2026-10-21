@@ -62,8 +62,8 @@ export function monadCollection(config: CollectionConfig): CollectionAdapter {
     }
   } };
 }
-export function assetKey(config: Pick<CollectionConfig,'chainId'|'collection'>, token: string, environment: string) {
-  return `${environment}:${config.chainId}:${config.collection.toLowerCase()}:${token}:last-lantern/v1`;
+export function assetKey(config: Pick<CollectionConfig,'chainId'|'collection'>, token: string, environment: string, expedition = 'last-lantern/v1') {
+  return `${environment}:${config.chainId}:${config.collection.toLowerCase()}:${token}:${expedition}`;
 }
 export function tokenNumber(value: unknown): bigint {
   if (typeof value!=='string' || !/^(0|[1-9]\d{0,77})$/.test(value) || BigInt(value)>=2n**256n) throw new RelayError('invalid_token',400);

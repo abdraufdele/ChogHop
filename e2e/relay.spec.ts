@@ -35,6 +35,7 @@ test('live API rejects cross-origin, unauthenticated and oversized requests',asy
   expect(oversized.status()).toBe(413);
 });
 test('isolated fixture wallets complete the owner-offline handoff through real API and PostgreSQL',async({page,browser},info)=>{
+  test.setTimeout(75_000);
   test.skip(process.env.CHOGHOP_E2E_STORAGE==='supabase','Requires genuine holder accounts for hosted gate');
   await wallet(page,`0x${'11'.repeat(32)}`);
   await page.goto('/relay');
@@ -77,6 +78,34 @@ test('isolated fixture wallets complete the owner-offline handoff through real A
   await friend.getByRole('button',{name:'Restore the lantern'}).click();
   await expect(friend.getByRole('heading',{name:'The coast has its light.'})).toBeVisible();
   await expect(friend.getByText('Status: redeemed')).toBeVisible();
+  const tokenId=mobile?'802':'801';
+  await expect(friend.getByRole('region',{name:`Passport entry for Chog #${tokenId}`})).toBeVisible();
+  await expect(friend.getByRole('region',{name:'Owner contribution receipt'})).toHaveCount(0);
+  await friend.reload();await friend.getByRole('button',{name:'Open invitation',exact:true}).click();
+  await expect(friend.getByRole('region',{name:'Chog adventure timeline'}).getByRole('listitem')).toHaveCount(1);
+  expect(await friend.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await signIn(page);await page.getByRole('button',{name:'Resume saved run'}).click();
+  await expect(page.getByRole('region',{name:'Owner contribution receipt'})).toContainText('You prepared a reflected signal');
+  await page.getByRole('region',{name:'Owner contribution receipt'}).screenshot({path:info.outputPath('owner-receipt.png')});
+  await page.getByRole('button',{name:'Open The Returning Light'}).click();
+  await expect(page.getByText(/Your Chog remembers its reflected signal/)).toBeVisible();
+  await expect(page.locator('.chart-clue > span:first-child')).toHaveText(['SLOT 1','SLOT 2','SLOT 3']);
+  await page.getByRole('radio',{name:'moon',exact:true}).check();
+  await page.getByRole('radio',{name:'west',exact:true}).check();
+  await page.getByRole('button',{name:'Prepare the signal'}).click();
+  await page.getByLabel('Friend’s wallet address').fill(privateKeyToAccount(`0x${'22'.repeat(32)}`).address);
+  await page.getByRole('button',{name:'Sign one guest move'}).click();
+  await expect(page.getByLabel('Share this invitation')).toBeVisible();
+  const nextUrl=await page.getByLabel('Share this invitation').inputValue();
+  await page.getByRole('button',{name:'Sign out'}).click();
+  await friend.goto(nextUrl);await friend.getByRole('button',{name:'Open invitation',exact:true}).click();
+  await friend.getByRole('radio',{name:'moon',exact:true}).check();
+  await friend.getByRole('radio',{name:'west',exact:true}).check();
+  await friend.getByRole('button',{name:'Restore the lantern'}).click();
+  await expect(friend.getByRole('heading',{name:'The Returning Light',exact:true})).toBeVisible();
+  await expect(friend.getByRole('region',{name:'Chog adventure timeline'}).getByRole('listitem')).toHaveCount(2);
+  if(mobile){await friend.emulateMedia({reducedMotion:'reduce'});await expect(friend.locator('.earned-passport .passport-stamp')).toHaveCSS('animation-name','none');}
+  await friend.getByRole('region',{name:`Passport entry for Chog #${tokenId}`} ).screenshot({path:info.outputPath('followup-passport.png'),animations:'disabled'});
   expect(await friend.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await context.close();
 });

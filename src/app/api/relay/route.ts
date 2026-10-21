@@ -43,6 +43,11 @@ export async function POST(request:NextRequest) {
     switch(body.operation) {
       case 'start': if(typeof body.tokenId!=='string') throw new RelayError('invalid_token',400); result=await service.start(auth.actor,body.tokenId); break;
       case 'resume':result=await service.resume(auth.actor,id(body.runId));break;
+      case 'passport':result=await service.passport(auth.actor,id(body.runId));break;
+      case 'followup':result=await service.followup(auth.actor,id(body.runId));break;
+      case 'history':
+        if(typeof body.tokenId!=='string')throw new RelayError('invalid_token',400);
+        result=await service.history(auth.actor,body.tokenId);break;
       case 'prepare':
         if(!Number.isSafeInteger(body.revision)) throw new RelayError('invalid_revision',400);
         result=await service.prepare(auth.actor,id(body.runId),body.revision as number,body.action);break;

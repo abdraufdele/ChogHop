@@ -21,6 +21,25 @@
 .relay-shell dt { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
 .relay-shell .text-button { display: inline-block; margin: 16px 16px 0 0; }
 .relay-entry { margin: 32px 0 20px; }
+.relay-journal { margin-top: 24px; overflow-wrap: anywhere; }
+.relay-journal .passport-byline { flex-direction: column; gap: 8px; }
+.passport-addresses { font-size: 12px; margin-top: 16px; }
+.passport-addresses summary { min-height: 44px; display: flex; align-items: center; text-decoration: underline; text-underline-offset: 4px; }
+.relay-shell .passport-addresses dt { color: #61536e; }
+.relay-shell .passport-addresses dd { margin: 4px 0 12px; overflow-wrap: anywhere; }
+.earned-passport { margin-top: 0; }
+.passport-date { color: #61536e; font-size: 11px; margin-top: 15px; text-align: center; }
+.owner-receipt { border-block: 1px solid #48405f; padding: 24px 0; margin: 24px 0; }
+.owner-receipt h3, .passport-timeline h3 { font-size: 24px; margin-bottom: 12px; }
+.owner-receipt > p { color: var(--muted); font-size: 14px; }
+.receipt-marks { display: flex; gap: 12px; align-items: center; justify-content: space-around; padding: 24px 0; }
+.receipt-marks > div { text-align: center; }
+.receipt-marks > div > span { display: block; color: #bba8f5; font-size: 9px; margin-bottom: 10px; letter-spacing: .6px; }
+.passport-timeline ol { list-style: none; padding: 0; margin: 18px 0 24px; }
+.passport-timeline li { display: flex; gap: 14px; align-items: center; border-left: 1px solid #817082; padding: 12px; }
+.timeline-seal { color: #f4c76b; border: 1px solid #817082; border-radius: 50%; padding: 8px; font-size: 10px; }
+.passport-timeline p { color: var(--muted); font-size: 12px; margin-top: 4px; }
+.returning-memory { border-left: 2px solid #93d6c0; color: #93d6c0; padding: 12px; font-size: 14px; margin: 18px 0; }
 .token-portrait { display: flex; align-items: center; gap: 16px; margin: 0 0 24px; font-size: 12px; color: var(--muted); }
 .token-portrait img { border-radius: 50% 50% 8px 8px; object-fit: cover; background: #24203d; border: 1px solid #817082; }
 .token-portrait strong { color: #f6eddb; }
@@ -29,7 +48,7 @@
 .relay-shell .treatment-options label > span { display: block; padding: 14px; border: 1px solid #817082; border-radius: 5px; text-transform: capitalize; }
 .relay-shell .chart-clues { display: flex; gap: 10px; margin: 24px 0; }
 .relay-shell .chart-clue { min-width: 0; flex: 1; border: 1px solid #48405f; border-radius: 5px; padding: 12px 8px; text-align: center; }
-.relay-shell .chart-clue > span { display: block; font-size: 10px; color: var(--muted); margin-bottom: 10px; }
+.relay-shell .chart-clue > span:first-child { display: block; font-size: 10px; color: var(--muted); margin-bottom: 10px; }
 .relay-shell .missing-clue { border: 1px dashed #bba8f5; }
 .relay-shell .missing-clue strong { display: block; font: 500 40px 'Fredoka',sans-serif; color: #bba8f5; }
 .relay-shell .received-signal { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; margin: 20px 0; border-block: 1px solid #48405f; }

@@ -19,6 +19,8 @@ export async function openTestPostgres(directory) {
   }
   const relay = await db.query("select to_regclass('choghop_private.relay_assets') as name");
   if (!relay.rows[0].name) await db.exec(await readFile(new URL('../../supabase/migrations/202610200002_guest_permissions.sql', import.meta.url), 'utf8'));
+  const passport = await db.query("select to_regclass('choghop_private.passport_entries') as name");
+  if (!passport.rows[0].name) await db.exec(await readFile(new URL('../../supabase/migrations/202610210003_passport_and_followup.sql', import.meta.url), 'utf8'));
   const rpc = async (name, args) => {
     const fields = functions[name];
     if (!fields) throw new Error('Unknown test RPC');

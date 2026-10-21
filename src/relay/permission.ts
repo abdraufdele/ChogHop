@@ -2,14 +2,15 @@ import { keccak256, stringToHex, type Address, type Hex } from 'viem';
 import type { RunnerRun } from '../puzzle/engine';
 
 export const EXPEDITION = 'last-lantern/v1';
+export const FOLLOWUP = 'returning-light/v1';
 export type Scope = {
   id: string; runId: string; owner: Address; guest: Address; collection: Address;
   tokenId: string; chainId: number; environment: string; origin: string;
   revision: number; signalHash: Hex; generation: number; nonce: Hex;
-  issuedAt: number; expiresAt: number;
+  issuedAt: number; expiresAt: number; expedition?: string;
 };
-export function signalHash(run: RunnerRun): Hex {
-  return keccak256(stringToHex(JSON.stringify([EXPEDITION, run.variantId, run.keeperMark, run.treatment, run.signal])));
+export function signalHash(run: RunnerRun, expedition: string = EXPEDITION): Hex {
+  return keccak256(stringToHex(JSON.stringify([expedition, run.variantId, run.keeperMark, run.treatment, run.signal])));
 }
 /** An app permission only: no transaction, approval, transfer, or login authority. */
 export function permissionData(scope: Scope) {
@@ -28,7 +29,7 @@ export function permissionData(scope: Scope) {
     ] },
     message: {
       origin: scope.origin, environment: scope.environment, owner: scope.owner, guest: scope.guest,
-      tokenId: BigInt(scope.tokenId), expedition: EXPEDITION, runId: scope.runId,
+      tokenId: BigInt(scope.tokenId), expedition: scope.expedition??EXPEDITION, runId: scope.runId,
       action: 'lantern.restore', revision: BigInt(scope.revision), signalHash: scope.signalHash,
       generation: BigInt(scope.generation), nonce: scope.nonce, issuedAt: BigInt(scope.issuedAt),
       expiresAt: BigInt(scope.expiresAt), uses: 1n,

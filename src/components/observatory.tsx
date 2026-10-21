@@ -3,12 +3,12 @@
 import { Pip, RoleIcon } from './symbols';
 import type { Glyph } from '../puzzle/grammar';
 
-type Props = { stage: string; selected: Glyph | null; onInspect: (object: 'chart' | 'lens' | 'lanterns') => void; interactive: boolean; live?: boolean };
+type Props = { stage: string; selected: Glyph | null; onInspect: (object: 'chart' | 'lens' | 'lanterns') => void; interactive: boolean; live?: boolean; returning?: boolean };
 
-export function Observatory({ stage, selected, onInspect, interactive, live=false }: Props) {
+export function Observatory({ stage, selected, onInspect, interactive, live=false, returning=false }: Props) {
   const lit = stage === 'complete';
   return <section className={`observatory ${lit ? 'is-lit' : ''} ${stage === 'handoff' ? 'is-transmitting' : ''}`} aria-label="Moonlit observatory">
-    <div className="scene-caption"><span className="coordinate-cross">+</span> THE TIDELIGHT OBSERVATORY <span>STATION 01</span></div>
+    <div className="scene-caption"><span className="coordinate-cross">+</span> THE TIDELIGHT OBSERVATORY <span>{returning?'STATION 02':'STATION 01'}</span></div>
     <svg className="scene-art" viewBox="0 0 900 650" fill="none" role="img" aria-labelledby="scene-title scene-desc">
       <title id="scene-title">A little observatory at the edge of the sea</title>
       <desc id="scene-desc">{live?'A damaged star chart awaits its Keeper.':'Pip waits beside a damaged star chart.'} A telescope and three lanterns sit beneath a moonlit dome. {lit ? 'The restored lighthouse sends a warm beam out to sea.' : 'The lighthouse is dark.'}</desc>
@@ -17,7 +17,7 @@ export function Observatory({ stage, selected, onInspect, interactive, live=fals
         {[[125, 130], [219, 66], [332, 106], [452, 56], [644, 95], [781, 172], [721, 56], [89, 278], [372, 192], [815, 282], [262, 203], [572, 44]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={i % 3 === 0 ? 2 : 1} />)}
       </g>
       <g stroke="#6B5D91" strokeWidth="1"><path d="m114 142 109-64 111 44 116-58m-227 14 41 115 70-71" strokeDasharray="3 8" /><path d="M114 134v16m-8-8h16m320-86v16m-8-8h16" /></g>
-      <circle cx="713" cy="122" r="41" fill="#BBA8F5" /><circle cx="732" cy="108" r="34" fill="#151326" />
+      <circle cx="713" cy="122" r="41" fill={returning?'#93D6C0':'#BBA8F5'} /><circle cx="732" cy="108" r="34" fill="#151326" />
       <path d="m44 388 116-57 65 24 105-41 77 57 125-28 81 23 99-46 141 61" stroke="#39334E" strokeWidth="2" />
       <g stroke="#48405F" strokeLinecap="round"><path d="M51 494h120m542-13h128M98 526h63m552 32h118M48 568h141m-62 36h95m487-78h81M74 459h87" /><path d="M209 519h17m554-1h23M94 581h33m558 16h37" /></g>
       <path d="M167 449q16 104 105 125l156 40 209-64 87-105-200-73Z" fill="#24203D" stroke="#48405F" strokeWidth="2" />
@@ -51,6 +51,6 @@ export function Observatory({ stage, selected, onInspect, interactive, live=fals
     <button className="scene-hotspot chart-hotspot" disabled={!interactive} onClick={() => onInspect('chart')}><RoleIcon role="keeper" /><span>Star chart</span></button>
     <button className="scene-hotspot lens-hotspot" disabled={!interactive} onClick={() => onInspect('lens')}><span className="lens-symbol" aria-hidden="true" /><span>Signal lens</span></button>
     <button className="scene-hotspot lantern-hotspot" disabled={!interactive} onClick={() => onInspect('lanterns')}><RoleIcon role="runner" /><span>Three lanterns</span></button>
-    <div className="scene-footnote"><span className="sample-dot" /> {live?'THE LAST LANTERN · LIVE RELAY':'PIP · ORIGINAL SAMPLE CHARACTER'} <span>Listen to the clues.</span></div>
+    <div className="scene-footnote"><span className="sample-dot" /> {returning?'THE RETURNING LIGHT · CHAPTER 02':live?'THE LAST LANTERN · LIVE RELAY':'PIP · ORIGINAL SAMPLE CHARACTER'} <span>Listen to the clues.</span></div>
   </section>;
 }

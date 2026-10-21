@@ -2,7 +2,7 @@ import { test,expect,type Page } from '@playwright/test';
 import { privateKeyToAccount } from 'viem/accounts';
 import { hexToString,type Hex } from 'viem';
 
-async function wallet(page:Page,key:Hex) {
+async function wallet(page:Page,key:Hex,rejectPermission=false) {
   const account=privateKeyToAccount(key);
   await page.exposeFunction('fixtureWalletRequest',async(method:string,params:unknown[])=>{
     if(method==='eth_requestAccounts'||method==='eth_accounts')return [account.address];
@@ -10,6 +10,7 @@ async function wallet(page:Page,key:Hex) {
     if(method==='wallet_switchEthereumChain'||method==='wallet_addEthereumChain')return null;
     if(method==='personal_sign')return account.signMessage({message:hexToString(params[0] as Hex)});
     if(method==='eth_signTypedData_v4'){
+      if(rejectPermission)throw new Error('User rejected the request. 4001');
       const data=JSON.parse(params[1] as string);delete data.types.EIP712Domain;
       return account.signTypedData(data);
     }
@@ -20,6 +21,50 @@ async function wallet(page:Page,key:Hex) {
     browser.ethereum={isMetaMask:true,on:()=>{},removeListener:()=>{},request:({method,params=[]}:{method:string;params:unknown[]})=>browser.fixtureWalletRequest(method,params)};
   });
 }
+
+test('recoverable holder states keep answers and explain declined signatures',async({page},info)=>{
+  test.skip(process.env.CHOGHOP_E2E_STORAGE==='supabase','Isolated presentation checks');
+  await wallet(page,`0x${'11'.repeat(32)}`,true);
+  await page.goto('/relay');await signIn(page);
+  await page.getByLabel('Chog token ID').fill(info.project.name==='mobile'?'9202':'9201');
+  let release:()=>void=()=>{};
+  const pending=new Promise<void>(resolve=>{release=resolve;});
+  await page.route('**/api/relay',async route=>{await pending;await route.abort();});
+  await page.getByRole('button',{name:'Verify and select Chog'}).click();
+  await expect(page.getByRole('status')).toContainText('Keep this page open');
+  await expect(page.getByRole('button',{name:'Checking the observatory…'})).toBeDisabled();
+  release();
+  await expect(page.locator('.error-message[role="alert"]')).toContainText('Check your connection');
+  await expect(page.getByLabel('Chog token ID')).toHaveValue(info.project.name==='mobile'?'9202':'9201');
+  await page.unroute('**/api/relay');
+  await page.getByRole('button',{name:'Verify and select Chog'}).click();
+  await expect(page.getByRole('region',{name:'Keeper chart clues'})).toBeVisible();
+  await page.getByRole('radio',{name:'star',exact:true}).check();
+  await page.getByRole('radio',{name:'south',exact:true}).check();
+  await page.getByRole('button',{name:'Prepare the signal'}).click();
+  await expect(page.getByLabel('Prepared mark becomes a signal')).toBeVisible();
+  await page.getByRole('button',{name:'Read Chog passport'}).click();
+  await expect(page.getByRole('region',{name:'Chog passport'})).toContainText('No stamps yet.');
+  await page.getByLabel('Friend’s wallet address').fill(privateKeyToAccount(`0x${'22'.repeat(32)}`).address);
+  await page.getByRole('button',{name:'Sign one guest move'}).click();
+  await expect(page.locator('.error-message[role="alert"]')).toContainText('Signature declined');
+  await expect(page.getByLabel('Share this invitation')).toHaveCount(0);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});
+
+for(const status of ['expired','revoked'] as const) test(`${status} tickets remain readable without a restoration action`,async({page},info)=>{
+  test.skip(process.env.CHOGHOP_E2E_STORAGE==='supabase','Isolated presentation fixture; server enforcement has database coverage');
+  await wallet(page,`0x${'22'.repeat(32)}`);
+  await page.route('**/api/relay',route=>route.fulfill({json:{result:{runId:'00000000-0000-4000-8000-000000000001',revision:1,stage:'runner',tokenId:'801',status,owner:privateKeyToAccount(`0x${'11'.repeat(32)}`).address,guest:privateKeyToAccount(`0x${'22'.repeat(32)}`).address,expiresAt:1,expedition:'last-lantern',memoryChoice:null,passport:null,puzzle:{rule:'Read both examples.',signal:{glyph:'sun',bearing:'west'},examples:[]}}}}));
+  await page.goto('/relay?invite=00000000-0000-4000-8000-000000000002');await signIn(page);
+  await page.getByRole('button',{name:'Open invitation',exact:true}).click();
+  await expect(page.getByRole('heading',{name:status==='expired'?'This ticket has expired.':'The Keeper closed this ticket.'})).toBeVisible();
+  await expect(page.getByText('Status: '+status)).toBeVisible();
+  await expect(page.getByRole('button',{name:'Restore the lantern'})).toHaveCount(0);
+  if(info.project.name==='mobile')await page.setViewportSize({width:320,height:760});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page.screenshot({path:info.outputPath(`${status}-ticket.png`),fullPage:true});
+});
 async function signIn(page:Page) {
   await page.getByRole('button',{name:/Connect/}).click();
   await page.getByRole('button',{name:'Sign in to ChogHop'}).click();

@@ -3,11 +3,11 @@
 import { Pip, RoleIcon } from './symbols';
 import type { Glyph } from '../puzzle/grammar';
 
-type Props = { stage: string; selected: Glyph | null; onInspect: (object: 'chart' | 'lens' | 'lanterns') => void; interactive: boolean; live?: boolean; returning?: boolean };
+type Props = { stage: string; selected: Glyph | null; onInspect: (object: 'chart' | 'lens' | 'lanterns') => void; interactive: boolean; live?: boolean; returning?: boolean; simulated?: boolean };
 
-export function Observatory({ stage, selected, onInspect, interactive, live=false, returning=false }: Props) {
+export function Observatory({ stage, selected, onInspect, interactive, live=false, returning=false, simulated=false }: Props) {
   const lit = stage === 'complete';
-  return <section className={`observatory ${lit ? 'is-lit' : ''} ${stage === 'handoff' ? 'is-transmitting' : ''}`} aria-label="Moonlit observatory">
+  return <section className={`observatory ${lit ? 'is-lit' : ''} ${stage === 'handoff'||stage==='runner' ? 'is-transmitting' : ''}`} aria-label="Moonlit observatory">
     <div className="scene-caption"><span className="coordinate-cross">+</span> THE TIDELIGHT OBSERVATORY <span>{returning?'STATION 02':'STATION 01'}</span></div>
     <svg className="scene-art" viewBox="0 0 900 650" fill="none" role="img" aria-labelledby="scene-title scene-desc">
       <title id="scene-title">A little observatory at the edge of the sea</title>
@@ -39,6 +39,7 @@ export function Observatory({ stage, selected, onInspect, interactive, live=fals
       {!live && <g transform="translate(290 358) scale(.66)"><Pip /></g>}
       <g transform="translate(141 301)"><path d="M-12 82h43L25 4H-6Z" fill="#24203D" stroke="#8B78A4" strokeWidth="2" /><path d="M-9 5h37L20-8H-2Z" fill="#4B405F" stroke="#8B78A4" /><path d="M0 5h17v22H0Z" fill={lit ? '#F4C76B' : '#48405F'} /><path d="M-4 40h25m-27 16h29" stroke="#4B405F" /></g>
       <path className="lighthouse-beam" d="m148 312 270-119v213Z" fill="#F4C76B" opacity="0" />
+      {lit&&<g stroke="#F4C76B" opacity=".5"><path d="m166 310 228-91m-228 96 228 64"/><circle cx="148" cy="312" r="15"/></g>}
       <path className="relay-thread" d="M278 381C310 281 388 309 496 318s189 34 146 121" stroke="#F4C76B" strokeWidth="2" strokeDasharray="5 7" opacity={stage === 'keeper' ? '.18' : '.8'} />
       {(['sun', 'moon', 'star'] as const).map((glyph, i) => <g key={glyph} transform={`translate(${563 + i * 48} ${414 - i * 6})`}>
         <ellipse cy="39" rx="19" ry="6" fill="#24203D" /><path d="M-9 29h18l3-24h-24ZM-13 4h26m-22-2v-9a9 9 0 0 1 18 0v9m-22 30h26" fill={lit || (stage === 'runner' && selected === glyph) ? '#F4C76B' : '#48405F'} stroke="#BBA8F5" strokeWidth="1.5" />
@@ -51,6 +52,6 @@ export function Observatory({ stage, selected, onInspect, interactive, live=fals
     <button className="scene-hotspot chart-hotspot" disabled={!interactive} onClick={() => onInspect('chart')}><RoleIcon role="keeper" /><span>Star chart</span></button>
     <button className="scene-hotspot lens-hotspot" disabled={!interactive} onClick={() => onInspect('lens')}><span className="lens-symbol" aria-hidden="true" /><span>Signal lens</span></button>
     <button className="scene-hotspot lantern-hotspot" disabled={!interactive} onClick={() => onInspect('lanterns')}><RoleIcon role="runner" /><span>Three lanterns</span></button>
-    <div className="scene-footnote"><span className="sample-dot" /> {returning?'THE RETURNING LIGHT · CHAPTER 02':live?'THE LAST LANTERN · LIVE RELAY':'PIP · ORIGINAL SAMPLE CHARACTER'} <span>Listen to the clues.</span></div>
+    <div className="scene-footnote"><span className="sample-dot" /> {live?(simulated?'FIXTURE SCENE · ':'HOLDER RELAY · '):'PRACTICE · '}{returning?'THE RETURNING LIGHT · 02':live?'THE LAST LANTERN':'PIP · SAMPLE CHARACTER'} <span>Listen to the clues.</span></div>
   </section>;
 }

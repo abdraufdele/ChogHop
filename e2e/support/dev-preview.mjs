@@ -3,6 +3,7 @@
 import { createServer, request } from 'node:http';
 import { connect } from 'node:net';
 import { spawn } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { hexToString } from 'viem';
 import { ownerAccount, guestAccount, collection } from './relay-fixtures.mjs';
@@ -18,11 +19,13 @@ const env = { ...process.env, SUPABASE_URL: 'http://127.0.0.1:54329',
 // An in-memory fixture database on every launch, regardless of inherited settings.
 delete env.CHOGHOP_TEST_DATA_DIR;
 const children = [];
+// A restarted in-memory Auth fixture cannot recognize the previous launch's cookies.
+const bridgeId=randomUUID();
 const provider = `(() => {
   const selected = new URL(location.href).searchParams.get('fixture_role');
   const previous = localStorage.getItem('choghop.fixture.role');
   const role = selected === 'runner' ? 'runner' : selected === 'keeper' ? 'keeper' : previous || 'keeper';
-  if (previous !== role || localStorage.getItem('choghop.fixture.bridge') !== '2') {
+  if (previous !== role || localStorage.getItem('choghop.fixture.bridge') !== '${bridgeId}') {
     for (const cookie of document.cookie.split(';')) {
       const name = cookie.trim().split('=')[0];
       if (name.startsWith('sb-127-')) document.cookie = name + '=; Max-Age=0; Path=/; SameSite=Lax';
@@ -30,7 +33,7 @@ const provider = `(() => {
     for (const key of Object.keys(localStorage)) if (key.startsWith('wagmi')) localStorage.removeItem(key);
   }
   localStorage.setItem('choghop.fixture.role', role);
-  localStorage.setItem('choghop.fixture.bridge', '2');
+  localStorage.setItem('choghop.fixture.bridge', '${bridgeId}');
   window.choghopFixtureWallet = { on() {}, removeListener() {},
     async request({method, params = []}) {
       const response = await fetch('/__fixture/wallet', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({role, method, params})});

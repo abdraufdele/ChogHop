@@ -38,6 +38,7 @@
 .passport-timeline ol { list-style: none; padding: 0; margin: 18px 0 24px; }
 .passport-timeline li { display: flex; gap: 14px; align-items: center; border-left: 1px solid #817082; padding: 12px; }
 .timeline-seal { color: #f4c76b; border: 1px solid #817082; border-radius: 50%; padding: 8px; font-size: 10px; }
+.timeline-seal { flex-shrink: 0; white-space: nowrap; }
 .passport-timeline p { color: var(--muted); font-size: 12px; margin-top: 4px; }
 .returning-memory { border-left: 2px solid #93d6c0; color: #93d6c0; padding: 12px; font-size: 14px; margin: 18px 0; }
 .token-portrait { display: flex; align-items: center; gap: 16px; margin: 0 0 24px; font-size: 12px; color: var(--muted); }
@@ -227,3 +228,76 @@ legend, .glyph-option > span, .treatment-picker strong { font-size: 14px; }
 .compact .mark-caption > span { font-size: 12px; }
 .invitation-ticket dl > div { font-size: 14px; }
 .lost-path { max-width: 700px; margin: 15vh auto; padding: 30px; }.lost-path h1 { font-size: 50px; margin: 20px 0; }.lost-path p { font-size: 17px; color: var(--muted); margin-bottom: 28px; }.lost-path .primary-button { max-width: 320px; }
+
+/* Expedition finish: evidence, paper tickets and a visible relay of light. */
+.fixture-handoff { border-block: 1px solid #817082; padding: 16px 0; margin-bottom: 24px; }
+.fixture-handoff .role-label { color: #93d6c0; font-size: 12px; }
+.fixture-handoff p:not(.role-label) { color: #d2c7de; font-size: 15px; line-height: 1.6; }
+.relay-shell .action-panel { min-width: 0; }
+.relay-shell .expedition-layout > div { min-width: 0; width: 100%; }
+.relay-shell .chart-clues { gap: 0; margin: 18px 0 0; }
+.relay-shell .chart-clue { border: 0; border-right: 1px solid #b4a68e; border-radius: 0; padding: 16px 4px; }
+.relay-shell .chart-clue:last-child { border-right: 0; }
+.relay-shell .chart-clue > span:first-child { color: #61536e; font-size: 11px; }
+.relay-shell .missing-clue { background: #e4d8c2; }
+.relay-shell .missing-clue strong { color: #61536e; }
+.deduction-evidence { background: #f6eddb; color: #24203d; border-left: 5px solid #d7cbb7; padding: 18px 14px; margin: 22px 0; border-radius: 2px 10px 10px 2px; }
+.deduction-evidence h3 { font-size: 21px; }
+.deduction-evidence .objective-copy { color: #51465d; font-size: 16px; margin-bottom: 4px; }
+.deduction-evidence .examples-heading { font-size: 11px; letter-spacing: .7px; color: #51465d; margin: 12px 0 0; }
+.relay-shell .deduction-evidence .example-strip { padding: 6px 0 0; gap: 0; }
+.relay-shell .deduction-evidence .transform-example { background: none; border-radius: 0; padding: 15px 0; }
+.relay-shell .deduction-evidence .transform-example + .transform-example { border-top: 1px dashed #a2939b; }
+.relay-shell .deduction-evidence .mark-caption { font-size: 14px; }
+.relay-shell .received-signal { border: 1px solid #817082; padding: 20px; color: #93d6c0; }
+.relay-shell .signal-transformation { justify-content: space-around; gap: 12px; border-block: 1px dashed #817082; margin-top: 24px; }
+.relay-shell .signal-transformation .transform-bridge { color: #f4c76b; }
+.signal-transformation > .signal-mark:last-child { animation: signal-arrives .65s ease-out; }
+.relay-shell .invitation-ticket { margin-top: 24px; border-top: 4px solid #d7cbb7; padding: 24px; }
+.relay-shell .invitation-ticket dt { color: #61536e; font-size: 11px; margin-top: 12px; }
+.relay-shell .invitation-ticket dd { font-size: 15px; line-height: 1.5; }
+.relay-shell .invitation-ticket > p { font-size: 14px; }
+.relay-shell .invitation-ticket .ticket-kicker { font-size: 12px; letter-spacing: 1px; }
+.invitation-ticket .text-button { color: #51465d; }
+.invitation-ticket .primary-button { border: 1px solid #61536e; }
+.invitation-ticket .relay-field { font-size: 15px; }
+.pending-move { border-left: 2px solid #93d6c0; padding: 12px; font-size: 15px; color: #93d6c0; }
+.ended-ticket { padding: 20px 0; border-block: 1px dashed #f4c76b; margin-top: 20px; }
+.ended-ticket h3 { font-size: 24px; }
+.ended-ticket p { margin-top: 10px; font-size: 16px; color: #d2c7de; }
+.relay-shell .objective-copy, .relay-shell .owner-receipt > p, .relay-shell .passport-story p { font-size: 16px; }
+.relay-shell .passport-stamp { animation: seal-pressed .65s cubic-bezier(.2,.7,.3,1); }
+.relay-shell .passport-topline { font-size: 10px; }
+.relay-shell .passport-disclaimer, .relay-shell .passport-date { font-size: 13px; }
+.relay-shell .passport-timeline p { font-size: 14px; }
+.relay-shell h2:focus { outline: 2px solid #bba8f5; outline-offset: 7px; }
+:focus-visible { outline: 3px solid #f4c76b; outline-offset: 4px; }
+input[type=radio]:focus-visible + span { outline: 3px solid #f4c76b; outline-offset: 4px; }
+.invitation-ticket :focus-visible, .passport-page :focus-visible { outline-color: #37645a; }
+.observatory:focus-within { border-color: #bba8f5; }
+.scene-hotspot:focus-visible { color: #f4c76b; border-color: #f4c76b; }
+@keyframes seal-pressed { 0% { opacity: 0; transform: rotate(-17deg) scale(1.18); } 65% { opacity: 1; transform: rotate(-9deg) scale(.97); } 100% { transform: rotate(-9deg) scale(1); } }
+@media (max-width:780px) {
+  .relay-shell .chapter-intro { padding-block: 24px 18px; }
+  .relay-shell .observatory { max-width: 560px; margin-inline: auto; }
+  .relay-shell .bottom-action-tray, .action-tray { position: relative; background: #151326; padding: 12px 0 max(12px,env(safe-area-inset-bottom)); }
+  .relay-shell .invitation-ticket { padding: 20px 16px; }
+  .relay-shell .relay-field input { font-size: 16px; }
+  .relay-shell .fixture-handoff { margin-bottom: 20px; }
+  .deduction-evidence { padding: 16px 10px; }
+  .relay-shell .chart-clues { margin-top: 12px; }
+  .relay-shell .mark-caption { font-size: 13px; }
+  .relay-shell .signal-transformation .mark-caption { font-size: 12px; }
+  .passport-byline { flex-wrap: wrap; }
+  .scene-caption { font-size: 8px; }
+}
+@media (max-width:370px) {
+  .relay-shell .invitation-ticket { padding-inline: 14px; }
+  .relay-shell .chart-clue .mark-drawing { width: 52px; height: 52px; }
+  .relay-shell .chart-clue .mark-caption { font-size: 12px; }
+  .relay-shell .scene-footnote { font-size: 7px; }
+  .scene-caption { font-size: 6px; letter-spacing: .5px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .relay-shell .passport-stamp, .signal-transformation > .signal-mark:last-child { animation: none; }
+}

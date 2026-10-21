@@ -3,15 +3,15 @@
 import { Pip, RoleIcon } from './symbols';
 import type { Glyph } from '../puzzle/grammar';
 
-type Props = { stage: string; selected: Glyph | null; onInspect: (object: 'chart' | 'lens' | 'lanterns') => void; interactive: boolean };
+type Props = { stage: string; selected: Glyph | null; onInspect: (object: 'chart' | 'lens' | 'lanterns') => void; interactive: boolean; live?: boolean };
 
-export function Observatory({ stage, selected, onInspect, interactive }: Props) {
+export function Observatory({ stage, selected, onInspect, interactive, live=false }: Props) {
   const lit = stage === 'complete';
   return <section className={`observatory ${lit ? 'is-lit' : ''} ${stage === 'handoff' ? 'is-transmitting' : ''}`} aria-label="Moonlit observatory">
     <div className="scene-caption"><span className="coordinate-cross">+</span> THE TIDELIGHT OBSERVATORY <span>STATION 01</span></div>
     <svg className="scene-art" viewBox="0 0 900 650" fill="none" role="img" aria-labelledby="scene-title scene-desc">
       <title id="scene-title">A little observatory at the edge of the sea</title>
-      <desc id="scene-desc">Pip waits beside a damaged star chart. A telescope and three lanterns sit beneath a moonlit dome. {lit ? 'The restored lighthouse sends a warm beam out to sea.' : 'The lighthouse is dark.'}</desc>
+      <desc id="scene-desc">{live?'A damaged star chart awaits its Keeper.':'Pip waits beside a damaged star chart.'} A telescope and three lanterns sit beneath a moonlit dome. {lit ? 'The restored lighthouse sends a warm beam out to sea.' : 'The lighthouse is dark.'}</desc>
       <path d="M27 90V24h65m716 0h65v66M27 555v65h65m716 0h65v-65" stroke="#48405F" />
       <g fill="#BBA8F5">
         {[[125, 130], [219, 66], [332, 106], [452, 56], [644, 95], [781, 172], [721, 56], [89, 278], [372, 192], [815, 282], [262, 203], [572, 44]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r={i % 3 === 0 ? 2 : 1} />)}
@@ -36,7 +36,7 @@ export function Observatory({ stage, selected, onInspect, interactive }: Props) 
       <path d="M460 445v-51a36 36 0 0 1 72 0v51" fill="#151326" stroke="#8B78A4" strokeWidth="2" /><path d="M477 445v-49a19 19 0 0 1 38 0v49" stroke="#4B405F" strokeWidth="2" />
       <path d="m218 426 9-111 107 17-12 113Z" fill="#C9BCA6" stroke="#151326" strokeWidth="3" /><path d="m235 326 86 14-10 91-83-12Z" fill="#F6EDDB" /><g stroke="#817082"><path d="m244 351 57 10m-59 12 52 10m-55 12 52 10" strokeDasharray="2 6" /><path d="m252 343 6 12 13 3-11 9 1 13-10-8-13 3 5-12-7-11Z" /></g><path d="m275 409 20-1-6 20-10-7-7 4Z" fill="#C9BCA6" />
       <path d="M217 437v18m103-8v14m-78-25-5 25" stroke="#8B78A4" strokeWidth="5" strokeLinecap="round" />
-      <g transform="translate(290 358) scale(.66)"><Pip /></g>
+      {!live && <g transform="translate(290 358) scale(.66)"><Pip /></g>}
       <g transform="translate(141 301)"><path d="M-12 82h43L25 4H-6Z" fill="#24203D" stroke="#8B78A4" strokeWidth="2" /><path d="M-9 5h37L20-8H-2Z" fill="#4B405F" stroke="#8B78A4" /><path d="M0 5h17v22H0Z" fill={lit ? '#F4C76B' : '#48405F'} /><path d="M-4 40h25m-27 16h29" stroke="#4B405F" /></g>
       <path className="lighthouse-beam" d="m148 312 270-119v213Z" fill="#F4C76B" opacity="0" />
       <path className="relay-thread" d="M278 381C310 281 388 309 496 318s189 34 146 121" stroke="#F4C76B" strokeWidth="2" strokeDasharray="5 7" opacity={stage === 'keeper' ? '.18' : '.8'} />
@@ -51,6 +51,6 @@ export function Observatory({ stage, selected, onInspect, interactive }: Props) 
     <button className="scene-hotspot chart-hotspot" disabled={!interactive} onClick={() => onInspect('chart')}><RoleIcon role="keeper" /><span>Star chart</span></button>
     <button className="scene-hotspot lens-hotspot" disabled={!interactive} onClick={() => onInspect('lens')}><span className="lens-symbol" aria-hidden="true" /><span>Signal lens</span></button>
     <button className="scene-hotspot lantern-hotspot" disabled={!interactive} onClick={() => onInspect('lanterns')}><RoleIcon role="runner" /><span>Three lanterns</span></button>
-    <div className="scene-footnote"><span className="sample-dot" /> PIP · ORIGINAL SAMPLE CHARACTER <span>Listen to the clues.</span></div>
+    <div className="scene-footnote"><span className="sample-dot" /> {live?'THE LAST LANTERN · LIVE RELAY':'PIP · ORIGINAL SAMPLE CHARACTER'} <span>Listen to the clues.</span></div>
   </section>;
 }

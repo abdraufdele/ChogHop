@@ -20,7 +20,7 @@ const messages: Record<string, string> = {
   incompatible_content: 'Your saved practice needs a field-note check. We’ve kept it safe. Please try again after the observatory is updated.',
 };
 
-function MarkPicker({ glyph, bearing, onGlyph, onBearing, disabled }: {
+export function MarkPicker({ glyph, bearing, onGlyph, onBearing, disabled }: {
   glyph: Glyph | null; bearing: Bearing; onGlyph: (glyph: Glyph) => void; onBearing: (bearing: Bearing) => void; disabled: boolean;
 }) {
   return <div className="mark-picker">
@@ -160,7 +160,8 @@ export function Practice({ initial }: { initial: KeeperView }) {
             {!snapshot && !busy && !error && <button className="text-button" onClick={() => void request()}>Open practice →</button>}
           </section>
         </div>
-        <details className="field-guide"><summary><span>FIRST TIME AT THE CLUB?</span> A field guide to this little relay <span aria-hidden="true">+</span></summary><div><p><strong>Keeper / the chart.</strong> Deduce the missing glyph and arrow. Choose a direct or reflected treatment to prepare the received signal.</p><p><strong>Runner / the lantern.</strong> Use the two environmental examples to infer how the received signal maps back to a lantern and its bearing. Each example follows the same rule.</p><p><strong>This is practice.</strong> You try both roles with a sample character. Your run is saved separately from live history and can be resumed in this browser for two hours. Real ownership, guest permissions and NFT passport entries arrive in later slices.</p></div></details>
+        <p className="relay-entry"><a className="practice-anchor" href="/relay">Bring a real Chog into the relay ↗</a></p>
+        <details className="field-guide"><summary><span>FIRST TIME AT THE CLUB?</span> A field guide to this little relay <span aria-hidden="true">+</span></summary><div><p><strong>Keeper / the chart.</strong> Deduce the missing glyph and arrow. Choose a direct or reflected treatment to prepare the received signal.</p><p><strong>Runner / the lantern.</strong> Use the two environmental examples to infer how the received signal maps back to a lantern and its bearing. Each example follows the same rule.</p><p><strong>This is practice.</strong> You try both roles with a sample character. Your run is saved separately from live history and can be resumed in this browser for two hours. The live relay requires configured wallet authentication and collection ownership checks. NFT passport entries arrive in slice 5.</p></div></details>
       </main>
       <footer className="site-footer"><span>ChogHop <span className="footer-dot">/</span> MADE FOR SMALL ADVENTURES TOGETHER</span><span>PRACTICE ONLY · NO WALLET REQUIRED</span></footer>
     </div>

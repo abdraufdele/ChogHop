@@ -1,8 +1,16 @@
-# Persisted practice: deployment and recovery
+# Practice and guest relay: deployment and recovery
 
-This migration adds only isolated practice runs and practice product events. It does not create live NFT history, wallet identities, guest permissions or passport awards.
+Apply `202610200001_persist_practice.sql`, then `202610200002_guest_permissions.sql`, once each, using an authorized database connection or the Supabase SQL editor. The first migration adds isolated practice. The second adds separate private ownership checkpoints, relay runs, signing challenges/permissions, immutable completion records and append-only events. All relay tables have forced RLS and explicit service-role grants; browsers cannot invoke `choghop_relay`. Passport awards remain slice 5. See the root README and `.env.example` for wallet/RPC settings and ownership finality limits.
+
+The previously exposed service key must be rotated and placed only in ignored `.env.local` or server deployment settings. Genuine Supabase Auth, hosted multi-connection concurrency, actual collection history and deployed holder acceptance remain unverified until configured. Local fixture results are not those hosted checks.
+
+Relay events currently cover run start, prepared signal, permission issuance/revocation and completion, with environment/content version and unknown assistance/incentive context. Invitation reads, authentication failures and rejected permission attempts are not yet a complete analytics funnel. Do not infer independent humans or organic behavior. Completion records contain wallet attribution; restrict exports and publish only aggregates. The existing backup instructions below must include all private relay tables and both public migrations when recovering the complete application.
 
 ## Configure Supabase
+
+Final slice 4 migration order is `202610200001_persist_practice.sql`, then `202610200002_guest_permissions.sql`. Run each complete file once, in a separate SQL editor execution, and confirm success before the next. Skip a migration already successfully applied; these initial files are not rerunnable. `practice-observations.sql` is an optional reporting query, not a migration. Future schema changes will use new migration files.
+
+Local verification on October 21, 2026: 77 unit/database tests and all 22 desktop/mobile browser checks passed, including a 320px touch-enabled guest completing after the owner signed out, active invitation restoration after refresh, and API request guards. Lint, typecheck and production build passed. Wallet signatures and chain responses were isolated test fixtures; hosted Supabase and genuine Monad holder acceptance remain pending.
 
 1. In the intended Supabase project's SQL editor, execute `migrations/202610200001_persist_practice.sql` once. It runs in one transaction and creates its own private schema, tables, RLS policies and three server-only public RPC functions. It does not modify existing project tables or Supabase-wide default grants. On subsequent deployments, add a new migration; do not rerun this initial migration over existing tables.
 2. Set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `.env.local` for local development, and as server environment variables in Vercel. Use the project's service-role key or a server secret key. Never put either key into a `NEXT_PUBLIC_` variable, client component, commit, screenshot, analytics payload or chat.

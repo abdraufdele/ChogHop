@@ -12,6 +12,30 @@
 }
 
 :root { color-scheme: dark; --muted: #b9afc6; --line: #48405f; }
+.relay-setup { max-width: 720px; padding: 32px 0 80px; }
+.relay-setup p { margin: 20px 0 28px; color: var(--muted); }
+.relay-identity, .relay-address { font-size: 12px; overflow-wrap: anywhere; color: var(--muted); margin: 18px 0; }
+.relay-field { display: grid; gap: 8px; margin: 20px 0; font-size: 13px; }
+.relay-field input { width: 100%; min-height: 48px; padding: 12px; background: #151326; border: 1px solid #817082; border-radius: 4px; color: #f6eddb; }
+.relay-shell dd { overflow-wrap: anywhere; margin: 0 0 12px; font-size: 12px; }
+.relay-shell dt { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.relay-shell .text-button { display: inline-block; margin: 16px 16px 0 0; }
+.relay-entry { margin: 32px 0 20px; }
+.token-portrait { display: flex; align-items: center; gap: 16px; margin: 0 0 24px; font-size: 12px; color: var(--muted); }
+.token-portrait img { border-radius: 50% 50% 8px 8px; object-fit: cover; background: #24203d; border: 1px solid #817082; }
+.token-portrait strong { color: #f6eddb; }
+.relay-shell .treatment-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+.relay-shell .treatment-options label { position: relative; cursor: pointer; }
+.relay-shell .treatment-options label > span { display: block; padding: 14px; border: 1px solid #817082; border-radius: 5px; text-transform: capitalize; }
+.relay-shell .chart-clues { display: flex; gap: 10px; margin: 24px 0; }
+.relay-shell .chart-clue { min-width: 0; flex: 1; border: 1px solid #48405f; border-radius: 5px; padding: 12px 8px; text-align: center; }
+.relay-shell .chart-clue > span { display: block; font-size: 10px; color: var(--muted); margin-bottom: 10px; }
+.relay-shell .missing-clue { border: 1px dashed #bba8f5; }
+.relay-shell .missing-clue strong { display: block; font: 500 40px 'Fredoka',sans-serif; color: #bba8f5; }
+.relay-shell .received-signal { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; margin: 20px 0; border-block: 1px solid #48405f; }
+.relay-shell .received-signal > span { font-size: 10px; letter-spacing: 1px; color: #93d6c0; }
+.relay-shell .example-strip { display: grid; gap: 14px; padding: 20px 0; }
+.relay-shell .transform-example { display: flex; justify-content: space-between; align-items: center; gap: 8px; min-width: 0; padding: 12px; background: #24203d; border-radius: 5px; }
 * { box-sizing: border-box; }
 body { margin: 0; background: #151326; color: #f6eddb; font-family: 'Nunito Sans', sans-serif; font-size: 16px; line-height: 1.5; }
 button, input { font: inherit; }

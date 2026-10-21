@@ -1,6 +1,6 @@
 import 'server-only';
 
-export type RpcName = 'choghop_practice_start' | 'choghop_practice_load' | 'choghop_practice_commit';
+export type RpcName = 'choghop_practice_start' | 'choghop_practice_load' | 'choghop_practice_commit' | 'choghop_relay';
 export type Rpc = (name: RpcName, args: Record<string, unknown>) => Promise<unknown>;
 export class StorageUnavailable extends Error {
   constructor() { super('Practice storage unavailable'); }

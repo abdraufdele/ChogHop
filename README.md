@@ -4,6 +4,10 @@ Slices 1–5 implementation: the **Last Lantern** puzzle engine, illustrated wal
 
 ## Play locally
 
+For a wallet-free fixture preview of the full relay, run `node e2e/support/dev-preview.mjs` and open `http://127.0.0.1:3000/`. This starts Next dev, an in-memory PostgreSQL fixture and a local test-wallet bridge, overriding configuration only in child-process environments. It does not change `.env.local`. Ports 3000, 3001 and 54329 must be free. Records reset on restart; never deploy this test launcher.
+
+Start practice at `/`, then Keeper at `/relay?fixture_role=keeper` (try token ID `801`). Connect and sign in using the injected fixture wallet. Invite guest `0x1563915e194D8CfBA1943570603F7606A3115508`; open the generated invitation URL with `&fixture_role=runner` appended to switch accounts. The invitation, Runner puzzle and earned passport share that URL. Return to the original Keeper run URL with `&fixture_role=keeper` for the contribution receipt. Switching fixture roles clears only local fixture auth and wallet connection state; use separate browser profiles for simultaneous roles.
+
 ```sh
 npm ci --legacy-peer-deps
 # Configure .env.local and apply the Supabase migration first; see supabase/README.md.

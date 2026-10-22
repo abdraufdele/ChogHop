@@ -1,6 +1,32 @@
-# ChogHop
+# What ChogHop does
 
-Slices 1–6 implementation: the **Last Lantern** puzzle engine, illustrated wallet-free practice, persisted revisions, Supabase Web3 authentication, scoped owner-to-guest relay, app-managed NFT passport and owner contribution receipt. **The Returning Light** continues from the Chog's recorded Keeper choice. Local verification uses isolated fixture wallets, chain observations and PostgreSQL; genuine Supabase/Monad acceptance remains pending. Practice stays separate and awards no live history.
+ChogHop is a little cooperative mystery for a Chog owner and a friend. The NFT is the owner's expedition pass and the identity to which shared stories are attached. One person prepares a clue; the other solves it later, even after the first person signs out. Think of lending a friend one move in a puzzle, rather than lending them your NFT or wallet.
+
+1. Anyone can try wallet-free practice with Pip, an original sample character, and play both roles themselves.
+2. In the holder relay, the owner signs in with their existing wallet. The server checks that wallet owns the selected Chog on the configured Monad collection.
+3. As Keeper, the owner reads two surviving chart clues, deduces the missing symbol/direction and chooses Direct or Reflected. This makes the signal the friend will receive.
+4. The owner names one friend's wallet and signs a separate permission for one run, one prepared signal and one correct lantern restoration. It expires after 30 minutes and can be revoked.
+5. The friend signs in as Runner, reads two signal-to-lantern examples, infers the transformation and restores the lantern. The friend does not need to own a Chog. The owner's wallet need not remain connected.
+6. Completion creates one app-managed passport entry for that NFT/run, crediting both people. The owner receives a contribution receipt from the same record.
+7. The original Keeper can open The Returning Light. Its authored variation depends on the Chog's previous Keeper choice, so the next room remembers what happened.
+
+The wallet login proves identity. The separate permission authorizes only an app action; it does not approve token spending, transfer the NFT or delegate arbitrary wallet transactions. The passport is stored by ChogHop in Supabase Postgres, not minted or written onchain. The first chapter and one follow-up are implemented; long-term retention and product-market fit remain unproven.
+
+
+```mermaid
+flowchart TD
+    Visitor[Visitor] --> Practice[Wallet-free practice with sample Pip]
+    Owner[Chog holder] --> Verify[Server verifies NFT ownership on Monad]
+    Verify --> Keeper[Keeper solves chart and prepares a signal]
+    Keeper --> Ticket[Permission for one named friend and one move]
+    Ticket --> Offline[Owner signs out]
+    Offline --> Runner[Friend signs in and decodes the signal]
+    Runner --> Passport[One app-managed passport entry credits both people]
+    Passport --> Receipt[Owner returns to a contribution receipt]
+    Receipt --> Next[Previous Keeper choice selects the follow-up]
+```
+
+Practice is a separate simulation; it does not issue the holder ticket or award NFT history. The holder's NFT stays in their wallet throughout the relay.
 
 ## Play locally
 
@@ -92,7 +118,7 @@ Live solo completion is deliberately unavailable: an owner cannot redeem their o
 
 ## Release preparation and acceptance
 
-Migrations 0001, 0002 and 0003 are applied in the intended Supabase project, as confirmed by the operator on October 21, 2026. Slice 6 introduces no migration. The fixture launcher applies those same files to its isolated in-memory PostgreSQL database. This confirmation does not substitute for hosted end-to-end acceptance.
+Migrations 0001, 0002 and 0003 are applied in the intended Supabase project, as confirmed by the operator on October 21, 2026. The latest polish release introduces no migration. The fixture launcher applies those same files to its isolated in-memory PostgreSQL database. This confirmation does not substitute for hosted end-to-end acceptance.
 
 Practice is a simulated solo walkthrough with original sample art, separate cookies, tables and product events. It issues no wallet permission and earns no holder passport. Fixture relay uses public test wallets and simulated Auth/Monad responses with real application routes and SQL; all scenes and earned records are labeled. An unconfigured collection shows a mock label and cannot issue holder permissions. Metadata images may be unavailable; token identity remains visible. No production traction, live ownership success or human usability study is claimed.
 
@@ -103,7 +129,21 @@ A permission ends after its one correct redemption, server-clock expiry, owner r
 Holder passports, immutable contributor records, receipts, runs and events live in private Supabase Postgres tables with RLS and server-only grants. A receipt projects the same shared entry, and the DB prevents duplicate awards. A passport is app-managed NFT history, not an onchain stamp, transferable asset or token reward. The two authored chapters are the complete content set; no third chapter, audio, hint ladder or contribution replay has been added. CSS motion honors reduced motion; all information is available without animation or sound. Production deployment and authentic holder verification are separate release gates.
 
 
-### Slice 6 verification
+## Audits and Verification
+
+
+These are internal engineering checks, not an independent third-party security audit. The last completed application verification passed **87 unit/database tests and 28 desktop/mobile browser checks**, plus separate fixture-preview checks at **1440px and 320px**. Lint, typecheck and the production build passed. These counts describe the recorded verification run, not a claim that tests were rerun for every documentation edit.
+
+| Area | What was tested |
+|---|---|
+| Puzzle engine | Valid/invalid answers, both treatments, authored variants, unique solutions and solver-proven solvability |
+| Permissions | Wrong guest, expired/revoked tickets, stale signal/run revisions, replay prevention and transfer away-and-back invalidation |
+| Atomic completion | Competing redemptions, owner/solo versus guest races, duplicate awards and exactly one passport entry per NFT/run |
+| Persistence | Refresh/resume, lost successful responses, storage outages, contribution receipts and remembered follow-up selection |
+| Recovery UI | Loading, empty passport, rejected signature, network failure, readable expired/revoked tickets and blocked invalid actions |
+| Accessibility/mobile | 320px layout, keyboard radio controls, focus states, reduced motion, no horizontal clipping and inspected mobile screenshots |
+| Fixture handoff | Keeper logout, switch to the named test Runner, explicit simulated offline owner, stale-session cleanup and unrelated-cookie preservation |
+| Build quality | Unit/database suite, browser suite, lint, TypeScript checks and optimized production build |
 
 The production desktop/mobile suite covers both practice treatments, refreshed runs, the owner-offline relay and follow-up, empty passports, loading feedback, rejected signatures, network failures, and expired/revoked tickets. Presentation-only ended-ticket cases use explicit response fixtures; permission enforcement and award races are tested separately against the real SQL. The mobile action tray stays in document flow so it cannot cover the clue controls. Browser screenshots are written to ignored `test-results/`.
 
@@ -113,23 +153,7 @@ With the fixture preview running, `node e2e/support/check-preview.mjs` separatel
 Verified October 21, 2026: **87 unit/database tests**, **28 production desktop/mobile browser checks**, lint, typecheck and production build passed. The separate preview check passed at **1440px and 320px**, including stale fixture session cleanup, unrelated-cookie preservation, keyboard focus, owner logout, Runner handoff, passport award, reduced motion and no horizontal clipping. Mobile screenshots were inspected. All chain/Auth responses in these runs were fixtures; genuine Monad holder and hosted Supabase end-to-end acceptance remain pending. Migration 0003 being applied is operator-confirmed, not an independently observed hosted acceptance result.
 
 
-## Plain-English product and submission guide
-
-### What ChogHop does
-
-ChogHop is a little cooperative mystery for a Chog owner and a friend. The NFT is the owner's expedition pass and the identity to which shared stories are attached. One person prepares a clue; the other solves it later, even after the first person signs out. Think of lending a friend one move in a puzzle, rather than lending them your NFT or wallet.
-
-1. Anyone can try wallet-free practice with Pip, an original sample character, and play both roles themselves.
-2. In the holder relay, the owner signs in with their existing wallet. The server checks that wallet owns the selected Chog on the configured Monad collection.
-3. As Keeper, the owner reads two surviving chart clues, deduces the missing symbol/direction and chooses Direct or Reflected. This makes the signal the friend will receive.
-4. The owner names one friend's wallet and signs a separate permission for one run, one prepared signal and one correct lantern restoration. It expires after 30 minutes and can be revoked.
-5. The friend signs in as Runner, reads two signal-to-lantern examples, infers the transformation and restores the lantern. The friend does not need to own a Chog. The owner's wallet need not remain connected.
-6. Completion creates one app-managed passport entry for that NFT/run, crediting both people. The owner receives a contribution receipt from the same record.
-7. The original Keeper can open The Returning Light. Its authored variation depends on the Chog's previous Keeper choice, so the next room remembers what happened.
-
-The wallet login proves identity. The separate permission authorizes only an app action; it does not approve token spending, transfer the NFT or delegate arbitrary wallet transactions. The passport is stored by ChogHop in Supabase Postgres, not minted or written onchain. The first chapter and one follow-up are implemented; long-term retention and product-market fit remain unproven.
-
-### Benefits and intended users
+## Benefits and intended users
 
 | User | What they gain | What is still a hypothesis |
 |---|---|---|
@@ -140,7 +164,7 @@ The wallet login proves identity. The separate permission authorizes only an app
 
 The current product offers short cooperative play, asynchronous participation, limited permissions and remembered history. It does not promise investment returns, rewards, token demand, NFT price appreciation, proven growth or proven recurring usage. An organizer dashboard, paid chapters and broader community campaigns are not implemented.
 
-### Judging: what we can demonstrate honestly
+## Judging: what we can demonstrate honestly
 
 | Criterion supplied by the entrant | Our strongest evidence | Limitation to say out loud |
 |---|---|---|
@@ -155,25 +179,13 @@ The puzzle could technically exist without NFTs. The NFT is essential to the imp
 
 These rows assess the six criteria provided by the entrant; they are not independent confirmation of the organizer's current rubric. Confirm whether $CHOG use is mandatory, optional, or a separate bonus before submitting. If mandatory, the current MVP does not meet that particular requirement. Do not quietly add token payouts or approvals just to imply compliance.
 
-### Collecting and sharing feedback and usage
-
-No feedback form or public analytics dashboard is built into the MVP. Use an owner-managed feedback form or repository issue link once one actually exists; do not advertise a placeholder as working.
-
-Recruit five independent players initially, including holders and non-holders. Let them try practice without giving them the answer. Then run at least one genuine owner/friend pair. Ask permission to record observations. Collect a voluntary nickname, mode, device, stage, what happened, what was expected, whether help was needed, approximate completion time, enjoyment from 1–5, and whether they would invite a friend or return. Screenshots and contact details should be optional. Never request seed phrases, private keys, API keys or raw signatures; do not publish wallet-linked feedback without consent.
-
-Use a bug template: mode + device/browser + stage + steps + expected result + actual result + optional redacted screenshot. Send sensitive reports privately to an actual project-maintainer contact. Share consented quotes and aggregate counts, with the date range, sample size and assistance/incentive conditions, in the submission notes.
-
-An authorized operator can run `supabase/practice-observations.sql` in the Supabase SQL editor for aggregate production-practice starts, completions, pending/ended unfinished runs and elapsed server time. Anonymous actor IDs are browser continuity, not unique people; elapsed server time includes idle/background time. Practice activity is not genuine holder activity. Existing private relay records/events support an operator-reviewed pilot; the complete funnel/retention dashboard is not implemented.
-
-Report practice completion = completed runs / started runs, with pending runs separately disclosed. For a mature invitation cohort, report completed shared handoffs / issued invitations, splitting pending, expired and revoked invitations. Report second-chapter progression separately from return on a later day. Only call something day-seven retention after a seven-day observation window and a clear cohort/return definition. Testers, fixtures, assisted demos and incentives must be disclosed. Before any observations, say "pilot pending" rather than inventing percentages.
-
-### Where the project goes next
+## Where the project goes next
 
 Before the deadline, prioritize genuine-holder verification, a stable deployed URL, several uncoached playtests and a clear three-minute demo. Fix any blocker they uncover before adding features. The agreed working deadline is October 23, 13:00 Africa/Lagos; reconfirm the organizer's deadline and submission fields.
 
 After the hackathon, let evidence decide: if players cannot explain the puzzle, improve onboarding; if invited friends drop out, simplify the invitation and wallet flow; if people finish both rooms and request more, author a small new chapter pack and measure voluntary returns. After the core release gate passes, the previously planned contribution replay and hint ladder can be evaluated. Neither is currently shipped. An organizer pilot could test recurring community adventures and possible paid content later; do not present an untested business model as product-market fit. Oracle, Dynamic, custom contracts and token payouts remain outside the approved MVP.
 
-### Simple testing instructions
+## Simple testing instructions
 
 For a nontechnical walkthrough, use the fixture preview. It needs no real wallet, NFT, cloud credentials or token purchase:
 
@@ -190,7 +202,7 @@ Restarting the launcher resets its disposable database and clears stale fixture 
 
 For automated verification, stop the preview first, then run the commands under "Run the checks". The default browser suite starts its own isolated services. To exercise the special preview handoff, start the preview and run `node e2e/support/check-preview.mjs` in another terminal. These checks are not proof of a live-chain integration.
 
-### Under the hood: technology stack
+## Under the hood: technology stack
 
 | Layer | Pinned implementation | Plain-English job |
 |---|---|---|
@@ -203,9 +215,33 @@ For automated verification, stop the preview first, then run the commands under 
 | Verification | Vitest 5.0.5, Playwright 1.64.1, PGlite 0.5.10 for local SQL fixtures | Check deduction, invalid moves, races, browser flows and responsive behavior |
 | Delivery | Vercel target; local Node 22.19.0/npm 10.9.3 | Build and host the web app/API; live deployment still pending |
 
+```mermaid
+sequenceDiagram
+    actor Player
+    participant Browser
+    participant Server as Next.js server
+    participant Auth as Supabase Auth
+    participant Monad as Monad RPC
+    participant DB as Supabase Postgres
+    Player->>Browser: Sign in and propose a puzzle move
+    Browser->>Server: Session, proposed move and expected revision
+    Server->>Auth: Verify signed-in wallet identity
+    Auth-->>Server: Verified identity or rejection
+    Server->>Monad: Observe finalized ownership and transfer history
+    Monad-->>Server: Chain observations or unavailable
+    Server->>Server: Validate role, puzzle, scope and revision
+    Server->>DB: Attempt authorized transition
+    DB->>DB: Atomically enforce permission and award constraints
+    DB-->>Server: Saved result or rejected transition
+    Server-->>Browser: Authoritative state and app-managed history
+    Browser-->>Player: Signal, ticket or passport result
+```
+
+This diagram describes the holder flow. Practice uses separate server/database records and does not require wallet or chain verification. No passport write goes to Monad. Not every read-only request scans the chain; required ownership-sensitive actions use the collection adapter.
+
 Browser proposes a move -> Next server verifies identity/ownership/scope and puzzle -> Postgres atomically saves a valid transition and any passport award -> browser receives the result. A browser completion flag is never enough. Metadata artwork cannot prove ownership. Monad checks use finalized chain observations; the blockchain and Postgres cannot form a single atomic transaction, so there is a disclosed observation-to-commit transfer window. No LLM call, oracle, custom contract, token payout, Dynamic integration or custom WebSocket server is part of this stack.
 
-### Step-by-step deployment and real-holder acceptance
+## Step-by-step deployment and real-holder acceptance
 
 Use one stable HTTPS hostname for the canonical app origin; permissions and sign-in are domain-bound. Choose it before issuing demo invitations. A renamed domain or different environment requires fresh invitations.
 
@@ -238,27 +274,13 @@ Use one stable HTTPS hostname for the canonical app origin; permissions and sign
 
 For an optional local real-service rehearsal, use the normal `npm run dev`, not the fixture launcher, with privately configured real services and allowed local origin. A friend's separate device cannot reach your PC using its own 127.0.0.1 URL; use the shared HTTPS deployment for the final two-person test. This documentation update does not change `.env.local` or perform deployment.
 
-### Three-minute working demo storyboard
 
-Aim for a 2:55 cut, leaving five seconds of margin. Prefer the genuine deployed flow after acceptance. If you must show fixtures, keep the fixture labels visible and say "working fixture demonstration; live verification pending." Do not relabel a mock wallet, metadata image or stamp as live/onchain.
-
-| Time | Show | Say |
-|---|---|---|
-| 0:00–0:15 | Title and observatory | "ChogHop turns a Chog into a shared expedition. One owner prepares a signal; a friend brings the light home." |
-| 0:15–0:35 | A quick wallet-free practice interaction | "Anyone can learn the roles before connecting a wallet. Pip is a sample character." |
-| 0:35–1:05 | Actual holder sign-in/selected token and Keeper chart | "The server verifies this Chog's owner. Two clues imply the missing mark; Direct or Reflected changes the signal." |
-| 1:05–1:30 | Named guest, signature and ticket | "This grants one friend one app move, for one run, until expiry. No NFT transfer or spending approval. Now the owner signs out." |
-| 1:30–1:55 | Separate guest profile/device, examples and restoration | "The friend does not need the NFT. They infer the rule and complete while the owner is offline." |
-| 1:55–2:15 | Redeemed status, passport and owner receipt | "One shared entry credits both people. This is app-managed history, not an onchain mint." |
-| 2:15–2:35 | The Returning Light's remembered-choice note/chart | "The Chog's previous Keeper choice selects its next authored adventure." |
-| 2:35–2:55 | Final URL, brief stack/status and next steps | "Built with Next.js, Monad and Supabase. The current MVP has two chapters. [State actual live/fixture verification status.] Next is testing whether people return for more." |
-
-Before recording, prepare two clean browser profiles, the correct chain/token, a stable URL and a fresh unexpired invitation. Use a token/run whose chapter is not already completed; a completed run cannot be reset into another award for filming. Reuse its completed history honestly or arrange a fresh consenting holder/token. Practice the narration. Record the real browser with a screen recorder already available to you; show the ticket fields and owner sign-out clearly. Wallet prompts/loading can be shortened in editing with an explicit "wallet step shortened" caption; do not fabricate response speed or imply a cut proves continuous offline behavior. Do not show seed phrases, service keys, private environment files, account dashboards or unrelated personal tabs. Keep any soundtrack optional and the narration understandable without it. Check the exported duration, readable text and audio, and open the video link signed out before submission.
-
-### Submission pack
-
-Prepare the actual deployed URL, an accessible source repository, the reviewed commit SHA, the <=3-minute video, a short description, simple judge instructions, real-vs-fixture status, NFT/$CHOG explanation, architecture/stack and known limitations. Add consented playtest observations only after collecting them, with dates and sample sizes. An example description: "ChogHop is a cooperative NFT expedition: a verified Chog owner prepares a signal, grants one friend a limited lantern move, and receives a shared passport entry that influences the next adventure. Practice is wallet-free. Passports are app-managed history; $CHOG is not integrated."
-
-Test all links from a fresh browser without your developer accounts. Follow the organizer's current required fields, visibility rules and deadline. The hackathon site could not be fetched during this documentation update, so its current rubric/deadline/mandatory token rules were not independently verified. The six judging criteria and working deadline here come from the entrant's instructions. Submit with time for corrections; do not wait until the final minute to discover an inaccessible video, protected URL or missing requirement.
+## Operational references
 
 Official operational references: [Supabase Web3 sign-in](https://supabase.com/docs/guides/auth/auth-web3), [Supabase allowed redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls), [Vercel Git deployment](https://vercel.com/docs/git), [Vercel environment variables](https://vercel.com/docs/environment-variables), [Vercel environments](https://vercel.com/docs/deployments/environments), [Vercel Node versions](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions), and [Vercel deployment protection](https://vercel.com/docs/deployment-protection). Product behavior and dependency versions above were checked against this repository; no new live acceptance result is claimed.
+
+## License
+
+ChogHop's original project code and documentation are licensed under the [MIT License](LICENSE), copyright 2026 ChogHop contributors. You may use, modify and redistribute the software subject to that license's notice requirements.
+
+Bundled fonts and dependencies retain their own licenses. Font notices are preserved in [LICENSES/Fredoka.txt](LICENSES/Fredoka.txt) and [LICENSES/NunitoSans.txt](LICENSES/NunitoSans.txt). This software license does not grant rights to third-party Chog branding, collection artwork or externally fetched NFT images.

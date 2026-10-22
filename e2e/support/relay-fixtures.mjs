@@ -13,7 +13,7 @@ function identity(address) {
   if(!users.has(address.toLowerCase())){
     const id=randomUUID();
     users.set(address.toLowerCase(),{id,aud:'authenticated',role:'authenticated',created_at:new Date().toISOString(),app_metadata:{provider:'web3',providers:['web3']},user_metadata:{},
-      identities:[{id:randomUUID(),identity_id:randomUUID(),user_id:id,provider:'web3',identity_data:{sub:`web3:ethereum:${address}`,address,chain:'ethereum',network:'10143'}}]});
+      identities:[{id:randomUUID(),identity_id:randomUUID(),user_id:id,provider:'web3',identity_data:{sub:`web3:ethereum:${address}`,custom_claims:{address,chain:'ethereum',network:'10143'}}}]});
   }
   return users.get(address.toLowerCase());
 }

@@ -15,7 +15,7 @@
 - [x] Personal Vercel account abdraufdele selected; choghop project created and linked.
 - [x] Supabase project confirmed; Ethereum sign-in toggle verified enabled in the Web3 Wallet provider settings.
 - [ ] Previously shared service-role credential has been rotated; enter the replacement directly into private Vercel settings.
-- [ ] Public Supabase publishable key is available from the same project.
+- [x] Public Supabase publishable key is configured; operator reported successful real-wallet sign-in.
 - [x] Public-chain preflight passed: mainnet, collection bytecode, ERC721 interface, finalized block/historical interface read and recent Transfer logs. Holder-specific historical ownerOf remains pending.
 - [x] Configured collection has code and supports ERC721. The fallback public RPC returned no code immediately before the configured deployment block and code at that block.
 
@@ -30,10 +30,10 @@
 
 ## Before inviting the holder
 
-- [ ] Public practice completes and refresh restores progress.
-- [ ] Mobile/keyboard controls work on the deployed version.
+- [x] Public practice completed and restored after refresh, including a fresh 320px browser session.
+- [x] Deployed practice completed at 320px using keyboard radio controls; 320px and 390px layouts had no horizontal overflow. This is viewport emulation, not a physical-phone claim.
 - [ ] A real non-holder wallet can sign in; it cannot claim another wallet's Chog.
-- [ ] No fixture account or mock collection is presented as genuine ownership.
+- [x] Deployed holder page says HOLDER RELAY; inspected page had no fixture bridge script or test-actor label. Practice is visibly simulated.
 - [ ] Owner has the public app/source links, short instructions, actual Runner wallet address and optional recording consent request.
 - [ ] Fresh invitations are created on the final origin, not copied from localhost or another hostname.
 
@@ -100,3 +100,14 @@ Deployment preparation verification: all 87 tests, lint and typecheck passed aga
 - Supabase Auth log for the earlier failed attempt reported a disallowed signed-message URI and localhost referrer; this is not proof of the exact browser URL. The operator reports adding the production URL and wildcard. A fresh real signature on the canonical production origin is still required.
 - Verification: 91 unit/database tests and 30 desktop/mobile Playwright checks passed, including the precise URI-rejection case. Lint, typecheck and production build passed. These tests use isolated fixture wallets and PostgreSQL; genuine live login and holder-to-friend acceptance are not claimed.
 - No environment-file edits or credential output were made for this fix.
+
+## Pre-volunteer checks and identity compatibility
+
+- The operator supplied a real public sign-in address and reported reaching Chog token selection. A finalized ownerOf read established that genuine Chog #801 exists and has a different owner. The operator retry returned wallet_identity_required before NFT ownership comparison; non-owner rejection is therefore still Pending.
+- Public Supabase Auth source establishes that wallet claims are nested under identity_data.custom_claims: https://github.com/supabase/auth/blob/master/internal/api/provider/provider.go and https://github.com/supabase/auth/blob/master/internal/api/web3.go. The parser now reads that verified identity shape, retains compatible flat identities, and rejects wrong network/provider/subject, malformed or conflicting claims and ambiguous identities. Editable user_metadata is never used as identity proof. Fixtures now emit the hosted shape.
+- The broad administrative user-list diagnostic was rejected by automatic review and was not executed. The fix used public provider source and isolated regression tests; no other users were inspected.
+- Fresh public practice at 320px passed Keeper/Runner completion, keyboard radios, stage-heading focus, persistence after refresh, visible simulation labels and no horizontal overflow. The completion and holder entry also fit 390px. The extension-free console returned no errors. Viewport overrides were reset.
+- Volunteer handout now contains links, a proposed real Runner address awaiting confirmation, separate login/permission explanations, a direct-reply problem-report process and an explicit recording choice. Participants, consent and scheduling remain pending.
+- The previously shared service credential remains in use at the operator prior request. Rotation is not marked complete; the operator must perform the credential change and enter the replacement privately before treating that original release requirement as met.
+
+Identity compatibility verification: all 95 unit/database tests, all 30 desktop/mobile browser checks, lint, typecheck and production build passed with nested-claim fixtures. Genuine non-owner rejection remains pending a production retry. No migration or local environment edit is required.

@@ -76,3 +76,13 @@ Record genuine wallet steps only after successful acceptance and recording conse
 **License:** MIT for original project code; bundled font licenses are preserved.
 
 Before submitting, check the current hackathon form for its exact required fields, repository-access requirements and upload limits. Submission is not yet sent. The video and genuine holder test still need human participants.
+
+## Confirmed submission form fields
+
+The signed-in Chogathon dashboard form was inspected on October 22; nothing was submitted. Required markers appear on Project Name, Description (maximum 8,000 characters), Demo Video and Contact Email. The form explicitly requests a YouTube or Google Drive demo link, at most 3 minutes. Other fields are Banner Image, App Link, Tech Stack, GitHub Repo, Judge Access Instructions (maximum 8,000 characters), and an optional Go-to-Market Plan (maximum 8,000 characters). GitHub repo, contact email and judge instructions are marked organizers-only.
+
+- Banner ready: submission/choghop-banner.png (1600×900), with editable SVG beside it. It uses original ChogHop observatory artwork.
+- Tech Stack field: Next.js App Router, TypeScript, Tailwind CSS, React, wagmi, viem, TanStack Query, Supabase Auth Web3 and Postgres with RLS, layered SVG/CSS, Vitest, Playwright, Vercel, Monad mainnet.
+- Judge Access Instructions draft: Open https://choghop.vercel.app for wallet-free practice. No wallet or NFT is required for that mode; its passport is a labeled sample. Open /relay for genuine Chog Genesis ownership verification on Monad mainnet (143). The owner must hold the selected Chog; their invited friend may use another existing wallet without owning a Chog. This uses identity and scoped permission signatures, not NFT spending approvals. Genuine holder acceptance is still pending; replace this statement only after an observed successful test. The repository is private; organizer GitHub access must be arranged before submission if needed.
+- Optional Go-to-Market draft: Start with small Chog-holder/friend playtests in the existing community. Measure completion, confusion, invitation acceptance and voluntary return for the remembered second chapter. Use feedback to improve onboarding and chapter design. Retention and demand are hypotheses; no traction or revenue is claimed.
+- Still required from the owner: real test participants, their wallet signatures, recording consent, an actual uploaded demo video URL, and a decision about judge access to the private repository. Review the final form before publishing.

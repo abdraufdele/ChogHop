@@ -1,6 +1,6 @@
 # ChogHop
 
-Slices 1–5 implementation: the **Last Lantern** puzzle engine, illustrated wallet-free practice, persisted revisions, Supabase Web3 authentication, scoped owner-to-guest relay, app-managed NFT passport and owner contribution receipt. **The Returning Light** continues from the Chog's recorded Keeper choice. Local verification uses isolated fixture wallets, chain observations and PostgreSQL; genuine Supabase/Monad acceptance remains pending. Practice stays separate and awards no live history.
+Slices 1–6 implementation: the **Last Lantern** puzzle engine, illustrated wallet-free practice, persisted revisions, Supabase Web3 authentication, scoped owner-to-guest relay, app-managed NFT passport and owner contribution receipt. **The Returning Light** continues from the Chog's recorded Keeper choice. Local verification uses isolated fixture wallets, chain observations and PostgreSQL; genuine Supabase/Monad acceptance remains pending. Practice stays separate and awards no live history.
 
 ## Play locally
 
@@ -111,3 +111,154 @@ With the fixture preview running, `node e2e/support/check-preview.mjs` separatel
 
 
 Verified October 21, 2026: **87 unit/database tests**, **28 production desktop/mobile browser checks**, lint, typecheck and production build passed. The separate preview check passed at **1440px and 320px**, including stale fixture session cleanup, unrelated-cookie preservation, keyboard focus, owner logout, Runner handoff, passport award, reduced motion and no horizontal clipping. Mobile screenshots were inspected. All chain/Auth responses in these runs were fixtures; genuine Monad holder and hosted Supabase end-to-end acceptance remain pending. Migration 0003 being applied is operator-confirmed, not an independently observed hosted acceptance result.
+
+
+## Plain-English product and submission guide
+
+### What ChogHop does
+
+ChogHop is a little cooperative mystery for a Chog owner and a friend. The NFT is the owner's expedition pass and the identity to which shared stories are attached. One person prepares a clue; the other solves it later, even after the first person signs out. Think of lending a friend one move in a puzzle, rather than lending them your NFT or wallet.
+
+1. Anyone can try wallet-free practice with Pip, an original sample character, and play both roles themselves.
+2. In the holder relay, the owner signs in with their existing wallet. The server checks that wallet owns the selected Chog on the configured Monad collection.
+3. As Keeper, the owner reads two surviving chart clues, deduces the missing symbol/direction and chooses Direct or Reflected. This makes the signal the friend will receive.
+4. The owner names one friend's wallet and signs a separate permission for one run, one prepared signal and one correct lantern restoration. It expires after 30 minutes and can be revoked.
+5. The friend signs in as Runner, reads two signal-to-lantern examples, infers the transformation and restores the lantern. The friend does not need to own a Chog. The owner's wallet need not remain connected.
+6. Completion creates one app-managed passport entry for that NFT/run, crediting both people. The owner receives a contribution receipt from the same record.
+7. The original Keeper can open The Returning Light. Its authored variation depends on the Chog's previous Keeper choice, so the next room remembers what happened.
+
+The wallet login proves identity. The separate permission authorizes only an app action; it does not approve token spending, transfer the NFT or delegate arbitrary wallet transactions. The passport is stored by ChogHop in Supabase Postgres, not minted or written onchain. The first chapter and one follow-up are implemented; long-term retention and product-market fit remain unproven.
+
+### Benefits and intended users
+
+| User | What they gain | What is still a hypothesis |
+|---|---|---|
+| Chog holders | A reason to use a Chog in a shared activity and a record of their contribution | Whether they voluntarily return after the two chapters |
+| Friends, including non-holders | A limited invitation into the experience without buying or borrowing the NFT | Whether invitations produce enjoyable community introductions |
+| New visitors and judges | A playable practice before wallet setup | Whether first-time players understand the deduction without coaching |
+| Community organizers | A candidate format for small cooperative events and future chapter releases | Demand, distribution support and willingness to pay |
+
+The current product offers short cooperative play, asynchronous participation, limited permissions and remembered history. It does not promise investment returns, rewards, token demand, NFT price appreciation, proven growth or proven recurring usage. An organizer dashboard, paid chapters and broader community campaigns are not implemented.
+
+### Judging: what we can demonstrate honestly
+
+| Criterion supplied by the entrant | Our strongest evidence | Limitation to say out loud |
+|---|---|---|
+| Novelty | A holder prepares an NFT-associated puzzle, delegates one move to a named non-holder and receives shared history that affects the next room | Do not claim this is the world's first NFT co-op game or a new onchain delegation standard |
+| Fun | Real chart deduction, a second decoding role, an original observatory and a lantern/stamp payoff | Automated solvability is not proof of fun; observe independent players |
+| Retention | Owner receipt, two credited contributions and a second chapter chosen from the first Keeper choice | This is a return mechanism, not measured retention; only two chapters exist |
+| Clarity | Practice first, chart/lantern role icons, explicit tickets, visible mode labels and fixture handoff button | Real wallet and signature onboarding still needs genuine-holder usability testing |
+| Execution | Prior passing verification: 87 unit/database tests, 28 desktop/mobile checks, 320px fixture handoff, lint/typecheck/build; server-side validation and DB award constraints | These were isolated fixtures; live Monad, hosted Auth and deployment acceptance remain pending |
+| $CHOG and NFT relevance | The real Chog NFT is required to start a holder relay, controls authorization and anchors its passport/continuation | No fungible $CHOG integration: no balance check, payment, staking, burn or reward. Practice needs neither asset |
+
+The puzzle could technically exist without NFTs. The NFT is essential to the implemented holder authorization/history model, not mathematically necessary to the puzzle. No NFT trait currently changes the puzzle; the previous Keeper choice selects the follow-up. Present this as meaningful but bounded NFT utility. Do not claim the app permission is enforced by a custom contract.
+
+These rows assess the six criteria provided by the entrant; they are not independent confirmation of the organizer's current rubric. Confirm whether $CHOG use is mandatory, optional, or a separate bonus before submitting. If mandatory, the current MVP does not meet that particular requirement. Do not quietly add token payouts or approvals just to imply compliance.
+
+### Collecting and sharing feedback and usage
+
+No feedback form or public analytics dashboard is built into the MVP. Use an owner-managed feedback form or repository issue link once one actually exists; do not advertise a placeholder as working.
+
+Recruit five independent players initially, including holders and non-holders. Let them try practice without giving them the answer. Then run at least one genuine owner/friend pair. Ask permission to record observations. Collect a voluntary nickname, mode, device, stage, what happened, what was expected, whether help was needed, approximate completion time, enjoyment from 1–5, and whether they would invite a friend or return. Screenshots and contact details should be optional. Never request seed phrases, private keys, API keys or raw signatures; do not publish wallet-linked feedback without consent.
+
+Use a bug template: mode + device/browser + stage + steps + expected result + actual result + optional redacted screenshot. Send sensitive reports privately to an actual project-maintainer contact. Share consented quotes and aggregate counts, with the date range, sample size and assistance/incentive conditions, in the submission notes.
+
+An authorized operator can run `supabase/practice-observations.sql` in the Supabase SQL editor for aggregate production-practice starts, completions, pending/ended unfinished runs and elapsed server time. Anonymous actor IDs are browser continuity, not unique people; elapsed server time includes idle/background time. Practice activity is not genuine holder activity. Existing private relay records/events support an operator-reviewed pilot; the complete funnel/retention dashboard is not implemented.
+
+Report practice completion = completed runs / started runs, with pending runs separately disclosed. For a mature invitation cohort, report completed shared handoffs / issued invitations, splitting pending, expired and revoked invitations. Report second-chapter progression separately from return on a later day. Only call something day-seven retention after a seven-day observation window and a clear cohort/return definition. Testers, fixtures, assisted demos and incentives must be disclosed. Before any observations, say "pilot pending" rather than inventing percentages.
+
+### Where the project goes next
+
+Before the deadline, prioritize genuine-holder verification, a stable deployed URL, several uncoached playtests and a clear three-minute demo. Fix any blocker they uncover before adding features. The agreed working deadline is October 23, 13:00 Africa/Lagos; reconfirm the organizer's deadline and submission fields.
+
+After the hackathon, let evidence decide: if players cannot explain the puzzle, improve onboarding; if invited friends drop out, simplify the invitation and wallet flow; if people finish both rooms and request more, author a small new chapter pack and measure voluntary returns. After the core release gate passes, the previously planned contribution replay and hint ladder can be evaluated. Neither is currently shipped. An organizer pilot could test recurring community adventures and possible paid content later; do not present an untested business model as product-market fit. Oracle, Dynamic, custom contracts and token payouts remain outside the approved MVP.
+
+### Simple testing instructions
+
+For a nontechnical walkthrough, use the fixture preview. It needs no real wallet, NFT, cloud credentials or token purchase:
+
+```powershell
+Set-Location 'C:\Users\PC\Projects\ChogHop'
+# First setup only, using the pinned Node/npm versions:
+npm ci --legacy-peer-deps
+node e2e/support/dev-preview.mjs
+```
+
+Keep that terminal running. Open `http://127.0.0.1:3000/` in Chrome. Use exactly 127.0.0.1, not a different hostname, for fixture sign-in. Finish practice first. Then open `/relay?fixture_role=keeper`, sign in with the supplied test wallet, verify sample Chog 801, solve the chart, prepare a signal and sign the guest permission. Click **Pass to test Runner · owner offline**, sign in as Runner, open the ticket and solve from the examples. The passport should credit both people exactly once. Use **Return as test Keeper**, sign in, resume the run and inspect the receipt. Open The Returning Light and repeat the handoff. Refresh after completion: there should be one entry for each completed chapter, not another stamp for the same run. On a fresh fixture database, the quick-reference answers are Star/South for chapter one, then Moon/East after Direct or Moon/West after Reflected for chapter two. Use those only for operator checks; do not coach a usability test.
+
+Restarting the launcher resets its disposable database and clears stale fixture sessions. This is different from real hosted persistence. For negative checks, try an incorrect answer (permission stays unused), decline a signature (no permission issued), revoke an unused ticket as owner (guest cannot solve), allow a fresh ticket to expire (no restoration action), and briefly go offline after the page loads (a recoverable message should preserve the selected answer). Test keyboard Tab/arrows/Enter, 320px width and the browser/OS reduced-motion preference. The automated suite covers integrity cases that should not be tested by moving valuable NFTs.
+
+For automated verification, stop the preview first, then run the commands under "Run the checks". The default browser suite starts its own isolated services. To exercise the special preview handoff, start the preview and run `node e2e/support/check-preview.mjs` in another terminal. These checks are not proof of a live-chain integration.
+
+### Under the hood: technology stack
+
+| Layer | Pinned implementation | Plain-English job |
+|---|---|---|
+| App and UI | Next.js App Router 16.4.2, React 19.3.1, TypeScript 5.9.3 | Pages, server endpoints and typed puzzle/game logic |
+| Styling/art | Tailwind CSS 4.3.3, original layered SVG/CSS, self-hosted Fredoka/Nunito Sans | The observatory, paper tickets, readable clues and stamp reveal |
+| Wallet | wagmi 3.7.8 and viem 2.57.7 | Wallet connection, message signatures and server RPC reads |
+| Browser data | TanStack Query 5.104.5 | Query provider supporting wallet integration |
+| Identity/storage | Supabase JS 2.118.0, SSR 0.12.7; Auth Web3 and Postgres with RLS/explicit grants | Prove who signed in and store authoritative runs, permissions, events and passport history |
+| Chain | Monad; mainnet chain 143, optional explicitly configured testnet 10143 | Verify the existing collection's ERC-721 ownership and intervening transfers |
+| Verification | Vitest 5.0.5, Playwright 1.64.1, PGlite 0.5.10 for local SQL fixtures | Check deduction, invalid moves, races, browser flows and responsive behavior |
+| Delivery | Vercel target; local Node 22.19.0/npm 10.9.3 | Build and host the web app/API; live deployment still pending |
+
+Browser proposes a move -> Next server verifies identity/ownership/scope and puzzle -> Postgres atomically saves a valid transition and any passport award -> browser receives the result. A browser completion flag is never enough. Metadata artwork cannot prove ownership. Monad checks use finalized chain observations; the blockchain and Postgres cannot form a single atomic transaction, so there is a disclosed observation-to-commit transfer window. No LLM call, oracle, custom contract, token payout, Dynamic integration or custom WebSocket server is part of this stack.
+
+### Step-by-step deployment and real-holder acceptance
+
+Use one stable HTTPS hostname for the canonical app origin; permissions and sign-in are domain-bound. Choose it before issuing demo invitations. A renamed domain or different environment requires fresh invitations.
+
+1. Arrange an owner who genuinely holds an NFT from the configured Chog Genesis collection on Monad mainnet and a friend using a different EOA wallet. Neither person shares wallet secrets. The friend need not hold a Chog. Use a separate browser profile/device for each. Do not use the supplied fixture keys for genuine acceptance.
+2. Confirm the intended Supabase project. Migrations 0001, 0002 and 0003 are already operator-confirmed applied there; do not reapply them to a populated project. A new project must receive the three migration files in order. Enable Ethereum Web3 under Auth Providers/Web3. Set the intended HTTPS Site URL and allowed application/redirect URLs for this project. Retain RLS and the private schema/grants from the migrations.
+3. Prepare valid runtime settings using `.env.example` as the field list, without publishing any local secret file. The previously pasted service-role credential must be rotated before release; update the private hosting secret directly and never paste it into an issue or video. Confirm the current collection address and deployment block through trusted collection/chain evidence, rather than substituting a sample address.
+4. Before the full rehearsal, verify that the RPC supports mainnet chain 143, ERC-721 interface checks, finalized blocks, historical `ownerOf`, checkpoint block hashes and token-filtered Transfer logs. The first use establishes a finalized ownership baseline; later grants/redemptions scan intervening history. Match `CHOG_LOG_BLOCK_SPAN` to the provider's actual supported log range. Long idle gaps can need repeated synchronization requests; persistent synchronization errors are a release blocker, not a successful ownership check. A transfer-away-and-back check should use an agreed test asset on a controlled environment, not an unsolicited transfer of a valuable holder NFT.
+5. Push the reviewed commit to the repository you intend to deploy, keeping `.env.local`, service keys and local artifacts out of Git. On Vercel, choose Add New/New Project and import that repository. Select the ChogHop repository root and Next.js preset. Use install command `npm ci --legacy-peer-deps` and build command `npm run build`; let Vercel manage the Next.js output. Select Node 22.x. Local exact Node/npm pins remain the reproducible local setup; Vercel manages supported runtime patch versions, so verify its actual build output instead of claiming an exact hosted patch.
+6. Add the environment variables below to the intended Vercel environment, then deploy/redeploy. Production and Preview settings are separate. Do not run or deploy `dev-preview.mjs`; do not set `CHOGHOP_FIXTURE_PREVIEW`, use loopback fixture RPC/Auth URLs, or upload test private keys. Public code is deployed; private service/RPC credentials belong only in server settings. `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` is the public key, never the service-role key. A `DATABASE_URL` is not required by the app runtime when migrations are applied using the SQL editor.
+7. Use a private rehearsal deployment or limited release initially. If its hostname differs from the final public hostname, configure the corresponding origin/Auth allowlist and issue fresh invitations there. Keep preview and production records/projects separate where practical; changing `CHOGHOP_ENVIRONMENT` also changes permission scope. Verify the chosen public submission deployment is reachable by judges in a fresh signed-out/incognito browser. Do not change unrelated project security settings just to make a preview link work; choose the intended public production deployment and its appropriate access policy.
+8. On the stable deployed URL, test practice without a wallet, then have the actual owner connect/sign in, select their actual token ID, and prepare the chart. The input is the NFT's token number, not a wallet or collection address. Have the owner invite the friend's exact wallet, inspect/sign the scoped permission, save the Keeper URL and send the invitation themselves.
+9. Have the owner sign out and close their tab. The friend independently opens the same HTTPS-origin invitation, signs in on the configured network, checks the named guest, token, allowed move and expiry, then decodes and solves. This rehearsal must use real wallets and live RPC/Supabase, with no fixture bridge. Wrong guesses must leave the move unused.
+10. Verify redeemed status, exactly one passport entry and both contributor addresses. Refresh it. Reopen the saved Keeper URL as the owner and verify the receipt. Open the remembered follow-up and verify its selected variant. Separately exercise an unused revoked invitation and an expired invitation; replay should not award again. Review app errors and private database rows as the authorized operator without publishing logs containing credentials or private identifiers.
+11. Record the commit/deployment URL, date/time/timezone, chain ID, collection, consenting participant identifiers, token ID, test results and any limitations in a private acceptance sheet. Mark live integration verified only after these observations; hosted practice tests alone do not establish real-holder success. Test once more at the final public hostname after any domain/env change.
+
+| Vercel variable | Value/source |
+|---|---|
+| `SUPABASE_URL` | Intended hosted Supabase project's HTTPS URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | Rotated server-only project credential |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Public key from the same project |
+| `CHOGHOP_ENVIRONMENT` | `production` for final release; use a separate, clearly tracked rehearsal environment |
+| `CHOGHOP_APP_ORIGIN` | Exact stable public HTTPS origin, no trailing slash |
+| `MONAD_CHAIN_ID` | `143` for genuine mainnet acceptance |
+| `MONAD_RPC_URL` | Working mainnet HTTPS RPC with the required historical/log support |
+| `CHOG_COLLECTION_ADDRESS` | Verified real collection address; never the fixture address |
+| `CHOG_COLLECTION_STANDARD` | `ERC721` |
+| `CHOG_DEPLOYMENT_BLOCK` | Verified deployment block, as a decimal integer |
+| `CHOG_LOG_BLOCK_SPAN` | A range supported by that provider; current default is 10 |
+| `CHOG_MEDIA_HOSTS` | Only exact trusted HTTPS metadata/image hosts, or empty to disable remote portraits |
+
+For an optional local real-service rehearsal, use the normal `npm run dev`, not the fixture launcher, with privately configured real services and allowed local origin. A friend's separate device cannot reach your PC using its own 127.0.0.1 URL; use the shared HTTPS deployment for the final two-person test. This documentation update does not change `.env.local` or perform deployment.
+
+### Three-minute working demo storyboard
+
+Aim for a 2:55 cut, leaving five seconds of margin. Prefer the genuine deployed flow after acceptance. If you must show fixtures, keep the fixture labels visible and say "working fixture demonstration; live verification pending." Do not relabel a mock wallet, metadata image or stamp as live/onchain.
+
+| Time | Show | Say |
+|---|---|---|
+| 0:00–0:15 | Title and observatory | "ChogHop turns a Chog into a shared expedition. One owner prepares a signal; a friend brings the light home." |
+| 0:15–0:35 | A quick wallet-free practice interaction | "Anyone can learn the roles before connecting a wallet. Pip is a sample character." |
+| 0:35–1:05 | Actual holder sign-in/selected token and Keeper chart | "The server verifies this Chog's owner. Two clues imply the missing mark; Direct or Reflected changes the signal." |
+| 1:05–1:30 | Named guest, signature and ticket | "This grants one friend one app move, for one run, until expiry. No NFT transfer or spending approval. Now the owner signs out." |
+| 1:30–1:55 | Separate guest profile/device, examples and restoration | "The friend does not need the NFT. They infer the rule and complete while the owner is offline." |
+| 1:55–2:15 | Redeemed status, passport and owner receipt | "One shared entry credits both people. This is app-managed history, not an onchain mint." |
+| 2:15–2:35 | The Returning Light's remembered-choice note/chart | "The Chog's previous Keeper choice selects its next authored adventure." |
+| 2:35–2:55 | Final URL, brief stack/status and next steps | "Built with Next.js, Monad and Supabase. The current MVP has two chapters. [State actual live/fixture verification status.] Next is testing whether people return for more." |
+
+Before recording, prepare two clean browser profiles, the correct chain/token, a stable URL and a fresh unexpired invitation. Use a token/run whose chapter is not already completed; a completed run cannot be reset into another award for filming. Reuse its completed history honestly or arrange a fresh consenting holder/token. Practice the narration. Record the real browser with a screen recorder already available to you; show the ticket fields and owner sign-out clearly. Wallet prompts/loading can be shortened in editing with an explicit "wallet step shortened" caption; do not fabricate response speed or imply a cut proves continuous offline behavior. Do not show seed phrases, service keys, private environment files, account dashboards or unrelated personal tabs. Keep any soundtrack optional and the narration understandable without it. Check the exported duration, readable text and audio, and open the video link signed out before submission.
+
+### Submission pack
+
+Prepare the actual deployed URL, an accessible source repository, the reviewed commit SHA, the <=3-minute video, a short description, simple judge instructions, real-vs-fixture status, NFT/$CHOG explanation, architecture/stack and known limitations. Add consented playtest observations only after collecting them, with dates and sample sizes. An example description: "ChogHop is a cooperative NFT expedition: a verified Chog owner prepares a signal, grants one friend a limited lantern move, and receives a shared passport entry that influences the next adventure. Practice is wallet-free. Passports are app-managed history; $CHOG is not integrated."
+
+Test all links from a fresh browser without your developer accounts. Follow the organizer's current required fields, visibility rules and deadline. The hackathon site could not be fetched during this documentation update, so its current rubric/deadline/mandatory token rules were not independently verified. The six judging criteria and working deadline here come from the entrant's instructions. Submit with time for corrections; do not wait until the final minute to discover an inaccessible video, protected URL or missing requirement.
+
+Official operational references: [Supabase Web3 sign-in](https://supabase.com/docs/guides/auth/auth-web3), [Supabase allowed redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls), [Vercel Git deployment](https://vercel.com/docs/git), [Vercel environment variables](https://vercel.com/docs/environment-variables), [Vercel environments](https://vercel.com/docs/deployments/environments), [Vercel Node versions](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions), and [Vercel deployment protection](https://vercel.com/docs/deployment-protection). Product behavior and dependency versions above were checked against this repository; no new live acceptance result is claimed.

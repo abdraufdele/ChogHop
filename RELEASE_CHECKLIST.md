@@ -10,9 +10,9 @@
 
 ## Account and configuration prerequisites
 
-- [ ] GitHub authentication works and the destination repository/visibility are confirmed.
+- [x] GitHub CLI authentication verified as abdraufdele; initial repository visibility is private.
 - [ ] Push the reviewed branch to the intended repository.
-- [ ] Vercel account/team and project are selected by the owner.
+- [x] Personal Vercel account abdraufdele selected; choghop project created and linked.
 - [ ] Supabase project is confirmed; Ethereum Web3 sign-in is enabled.
 - [ ] Previously shared service-role credential has been rotated; enter the replacement directly into private Vercel settings.
 - [ ] Public Supabase publishable key is available from the same project.
@@ -66,3 +66,11 @@ The NFT remains with its owner. This flow requires identity/permission signature
 - Vercel install/build settings are prepared locally. Deployment, canonical-origin configuration, real-wallet sign-in/non-holder rejection and genuine-holder acceptance are not yet completed.
 
 Local preparation verification on October 22: lint, typecheck and production build passed. `.env.local` is absent from tracked files and its Git path history. A limited literal credential-pattern scan of tracked HEAD found no matches; this is not a comprehensive secret audit. No deployment or hosted wallet acceptance has occurred.
+
+## Hosting setup continuation — October 22, 2026
+
+- Vercel CLI 65.1.0 authenticated as abdraufdele; choghop project creation and linking verified. GitHub CLI authentication also verified.
+- Vercel CLI unexpectedly appended an OIDC-token section to .env.local during linking. That generated section was removed without printing its value or changing existing settings. Future deployment steps must not pull development environment settings.
+- The existing local publishable key uses SUPABASE_PUBLISHABLE_KEY; production must expose the same public key under the application-required NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY name.
+- The local service-role value still matches the previously shared credential. Do not upload it; await the replacement locally or direct entry into private Vercel Production settings.
+- No public deployment or real-wallet acceptance is claimed by these account/setup checks.

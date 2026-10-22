@@ -9,3 +9,5 @@ dist/
 .next/
 playwright-report/
 test-results/
+
+.vercel/

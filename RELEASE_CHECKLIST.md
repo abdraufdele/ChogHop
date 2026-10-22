@@ -76,3 +76,12 @@ Local preparation verification on October 22: lint, typecheck and production bui
 - No public deployment or real-wallet acceptance is claimed by these account/setup checks.
 
 Deployment preparation verification: all 87 tests, lint and typecheck passed again; slice 6 is committed as aee9d55. Vercel project runtime is confirmed 22.x and the assigned production hostname is choghop.vercel.app. Required Production environment variable names are configured; the public publishable key is mapped from its existing local name without editing the file. Source deployment attempts failed before upload with fetch/socket errors. Git-based fallback requires the owner to approve the Vercel GitHub App for only ChogHop. No hosted practice/console acceptance is claimed yet.
+
+## First production smoke check — October 22, 2026
+
+- Saved and reloaded GitHub App settings: Vercel has Only select repositories enabled with exactly abdraufdele/ChogHop selected (installation 174195050).
+- Connected repository production deployment dpl_GEBpCtHWFfcqgny8er394cdMXc33 built commit 3c761fa and reached Ready. Public alias: https://choghop.vercel.app. Hosted runtime is Node 22.x (Vercel selected 22.23.4 / npm 10.9.9, rather than the local exact patch pins).
+- Hosted direct practice completed in Chrome; hosted reflected practice completed in the extension-free in-app browser. Both revealed the correctly labeled practice passport. No real NFT history was awarded.
+- Chrome reload initially showed a network-recovery state; Reload practice restored the completed saved run. Chrome logged wallet-extension conflicts; filtering extension-source entries showed no app errors. The extension-free reflected-flow console returned no errors.
+- Supabase Site URL should be https://choghop.vercel.app and Redirect URLs should include https://choghop.vercel.app/**. Operator confirmation of those settings and real-wallet/holder acceptance remain pending.
+- Service role remains a server-only Production Secret at the operator explicit request; credential rotation remains outstanding. No local environment-file edit was made during production deployment or smoke checks.

@@ -1,5 +1,7 @@
 # About ChogHop
 
+<img src="src/app/icon.svg" alt="ChogHop lantern logo" width="64" height="64">
+
 ChogHop is a cooperative puzzle adventure for the Chog NFT community on Monad. Set in a moonlit observatory, it lets an NFT owner and a friend solve a mystery together, even when they are not online at the same time.
 
 The owner plays the **Keeper**, using chart clues to prepare a secret signal and inviting one friend to restore a lantern. The friend plays the **Runner**, decoding the signal through environmental examples. A scoped invitation gives that friend permission for one puzzle move without transferring the NFT or granting control of the owner's wallet. The friend does not need to own a Chog.

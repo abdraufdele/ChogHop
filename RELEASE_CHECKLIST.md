@@ -13,7 +13,7 @@
 - [x] GitHub CLI authentication verified as abdraufdele; initial repository visibility is private.
 - [x] Reviewed branch pushed to private repository https://github.com/abdraufdele/ChogHop (default branch: codex/puzzle-engine).
 - [x] Personal Vercel account abdraufdele selected; choghop project created and linked.
-- [ ] Supabase project is confirmed; Ethereum Web3 sign-in is enabled.
+- [x] Supabase project confirmed; Ethereum sign-in toggle verified enabled in the Web3 Wallet provider settings.
 - [ ] Previously shared service-role credential has been rotated; enter the replacement directly into private Vercel settings.
 - [ ] Public Supabase publishable key is available from the same project.
 - [x] Public-chain preflight passed: mainnet, collection bytecode, ERC721 interface, finalized block/historical interface read and recent Transfer logs. Holder-specific historical ownerOf remains pending.
@@ -85,3 +85,10 @@ Deployment preparation verification: all 87 tests, lint and typecheck passed aga
 - Chrome reload initially showed a network-recovery state; Reload practice restored the completed saved run. Chrome logged wallet-extension conflicts; filtering extension-source entries showed no app errors. The extension-free reflected-flow console returned no errors.
 - Supabase Site URL should be https://choghop.vercel.app and Redirect URLs should include https://choghop.vercel.app/**. Operator confirmation of those settings and real-wallet/holder acceptance remain pending.
 - Service role remains a server-only Production Secret at the operator explicit request; credential rotation remains outstanding. No local environment-file edit was made during production deployment or smoke checks.
+
+## Holder-readiness configuration — October 22, 2026
+
+- Supabase Site URL saved as https://choghop.vercel.app and redirect allowlist saved with https://choghop.vercel.app/**. The saved values were observed in the dashboard; Ethereum sign-in was already enabled in the provider detail panel.
+- Live /relay initially displayed Mock collection. Boolean configuration validation identified a collection-standard mismatch; corrected only Vercel Production CHOG_COLLECTION_STANDARD to the adapter-supported ERC721 value, then rebuilt. Local .env.local remains unchanged, so the local mismatch must be resolved by the operator separately if using live mode locally.
+- Deployment dpl_GNBQ8rs6NDfxC9N2g3JErYE75qX2 now serves the public alias with HOLDER RELAY and the wallet sign-in entry. This verifies configuration and rendering, not genuine ownership, wallet authentication or invitation redemption.
+- The operator has no consenting holder/friend recruited yet. HOLDER_TEST_AND_SUBMISSION.md contains an unsent invitation draft, the real acceptance procedure, feedback questions and honest demo/submission drafts. Real login signatures and holder acceptance remain pending.

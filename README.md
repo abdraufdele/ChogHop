@@ -1,6 +1,14 @@
-# What ChogHop does
+# About ChogHop
 
-ChogHop is a little cooperative mystery for a Chog owner and a friend. The NFT is the owner's expedition pass and the identity to which shared stories are attached. One person prepares a clue; the other solves it later, even after the first person signs out. Think of lending a friend one move in a puzzle, rather than lending them your NFT or wallet.
+ChogHop is a cooperative puzzle adventure for the Chog NFT community on Monad. Set in a moonlit observatory, it lets an NFT owner and a friend solve a mystery together, even when they are not online at the same time.
+
+The owner plays the **Keeper**, using chart clues to prepare a secret signal and inviting one friend to restore a lantern. The friend plays the **Runner**, decoding the signal through environmental examples. A scoped invitation gives that friend permission for one puzzle move without transferring the NFT or granting control of the owner's wallet. The friend does not need to own a Chog.
+
+Each completed adventure adds a shared entry to the Chog's **expedition passport**, crediting both participants and returning a contribution receipt to the owner. The Keeper's recorded choice influences the next authored chapter, giving the Chog continuity across adventures. This passport is app-managed history stored in Supabase, not an onchain stamp.
+
+ChogHop gives holders a way to bring friends into an activity built around their NFT. Anyone can first try **wallet-free practice** with an original sample character. The MVP contains two chapters: **The Last Lantern** and **The Returning Light**. Its fixture-based journeys are tested; genuine Monad holder and hosted Supabase end-to-end acceptance remain pending.
+
+## How it works
 
 1. Anyone can try wallet-free practice with Pip, an original sample character, and play both roles themselves.
 2. In the holder relay, the owner signs in with their existing wallet. The server checks that wallet owns the selected Chog on the configured Monad collection.
@@ -204,7 +212,7 @@ For automated verification, stop the preview first, then run the commands under 
 
 ## Under the hood: technology stack
 
-| Layer | Pinned implementation | Plain-English job |
+| Layer | Pinned implementation | Job |
 |---|---|---|
 | App and UI | Next.js App Router 16.4.2, React 19.3.1, TypeScript 5.9.3 | Pages, server endpoints and typed puzzle/game logic |
 | Styling/art | Tailwind CSS 4.3.3, original layered SVG/CSS, self-hosted Fredoka/Nunito Sans | The observatory, paper tickets, readable clues and stamp reveal |

@@ -154,3 +154,15 @@ test('isolated fixture wallets complete the owner-offline handoff through real A
   expect(await friend.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await context.close();
 });
+
+// Reproduce the hosted Auth URI failure without creating a real wallet session.
+test('wallet login explains a rejected sign-in URL',async({page})=>{
+  test.skip(process.env.CHOGHOP_E2E_STORAGE==='supabase','Isolated auth error presentation');
+  await wallet(page,`0x${'11'.repeat(32)}`);
+  await page.route('**/auth/v1/token?grant_type=web3',route=>route.fulfill({status:400,contentType:'application/json',headers:{'Access-Control-Allow-Origin':'http://127.0.0.1:3000'},body:JSON.stringify({code:'validation_failed',msg:'Signed Ethereum message is using URI which is not allowed on this server, message was signed for another app'})}));
+  await page.goto('/relay');
+  await page.getByRole('button',{name:'Connect Injected'}).click();
+  await page.getByRole('button',{name:'Sign in to ChogHop'}).click();
+  await expect(page.locator('.error-message[role="alert"]')).toContainText('Sign-in URL is not allowed by Supabase');
+  await expect(page.getByLabel('Chog token ID')).not.toBeVisible();
+});

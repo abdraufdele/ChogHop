@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
-import type { EthereumWallet } from '@supabase/supabase-js';
+import { walletForSignIn, walletSignInError, WalletSignInError } from '../auth/wallet-login';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider, createConfig, http, useConnection, useConnect, useConnectors, useDisconnect, useSignTypedData, useSwitchChain } from 'wagmi';
 import { injected } from 'wagmi/connectors';
@@ -92,18 +92,20 @@ function RelayRoom({settings}:{settings:RelaySettings}) {
   }
   async function work(action:()=>Promise<void>) {
     setBusy(true);setError('');
-    try{await action();}catch(e){const code=e instanceof Error?e.message:'';const rejected=/reject|denied|declined|4001/i.test(code);setError(messages[rejected?'signature_rejected':code]??'That step couldn’t finish. Your saved run is safe. Reload the run and try again.');}
+    try{await action();}catch(e){const code=e instanceof Error?e.message:'';const rejected=/reject|denied|declined|4001/i.test(code);setError(e instanceof WalletSignInError?e.message:messages[rejected?'signature_rejected':code]??'That step couldn’t finish. Your saved run is safe. Reload the run and try again.');}
     finally{setBusy(false);}
   }
   async function login() {
-    if(!client || !connection.connector)throw new Error('sign_in_required');
-    if(connection.chainId!==settings.chainId)await switchChain.mutateAsync({chainId:settings.chainId});
-    const provider=await connection.connector.getProvider() as EIP1193Provider;
-    const wallet={address:connection.address!,request:provider.request.bind(provider),on:provider.on.bind(provider),removeListener:provider.removeListener.bind(provider)} as unknown as EthereumWallet;
-    const {error}=await client.auth.signInWithWeb3({chain:'ethereum',wallet,statement:'Sign in to ChogHop. This does not authorize a guest move.',options:{signInWithEthereum:{chainId:settings.chainId,nonce:crypto.randomUUID().replaceAll('-','')}}});
-    if(error)throw error;
-    setSignedIn(true);
+    try {
+      if(!client || !connection.connector)throw new Error('wallet_provider_missing');
+      if(connection.chainId!==settings.chainId)await switchChain.mutateAsync({chainId:settings.chainId});
+      const wallet=walletForSignIn(await connection.connector.getProvider());
+      const {error}=await client.auth.signInWithWeb3({chain:'ethereum',wallet,statement:'Sign in to ChogHop. This does not authorize a guest move.',options:{signInWithEthereum:{chainId:settings.chainId,nonce:crypto.randomUUID().replaceAll('-','')}}});
+      if(error)throw error;
+      setSignedIn(true);
+    } catch(error) { throw walletSignInError(error); }
   }
+
   async function open() {
     const result=await request(invite?'invitation':runId?'resume':'start',invite?{permissionId:invite}:runId?{runId}:{tokenId:token});
     setSnapshot(result);setRunId(result.runId);setJournal(null);if(result.permissionId)setPermission(result.permissionId);

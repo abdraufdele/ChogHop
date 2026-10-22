@@ -92,3 +92,11 @@ Deployment preparation verification: all 87 tests, lint and typecheck passed aga
 - Live /relay initially displayed Mock collection. Boolean configuration validation identified a collection-standard mismatch; corrected only Vercel Production CHOG_COLLECTION_STANDARD to the adapter-supported ERC721 value, then rebuilt. Local .env.local remains unchanged, so the local mismatch must be resolved by the operator separately if using live mode locally.
 - Deployment dpl_GNBQ8rs6NDfxC9N2g3JErYE75qX2 now serves the public alias with HOLDER RELAY and the wallet sign-in entry. This verifies configuration and rendering, not genuine ownership, wallet authentication or invitation redemption.
 - The operator has no consenting holder/friend recruited yet. HOLDER_TEST_AND_SUBMISSION.md contains an unsent invitation draft, the real acceptance procedure, feedback questions and honest demo/submission drafts. Real login signatures and holder acceptance remain pending.
+
+## Wallet login hardening
+
+- Login now accepts request-only EIP-1193 providers and binds event methods only when they exist. Raw provider/Auth messages and signed data are never echoed into the UI.
+- Added specific fixed copy for URI/domain rejection, declined signatures, missing providers, rate limits, disabled Web3, invalid public-key configuration, network errors, invalid signatures and chain-switch failures.
+- Supabase Auth log for the earlier failed attempt reported a disallowed signed-message URI and localhost referrer; this is not proof of the exact browser URL. The operator reports adding the production URL and wildcard. A fresh real signature on the canonical production origin is still required.
+- Verification: 91 unit/database tests and 30 desktop/mobile Playwright checks passed, including the precise URI-rejection case. Lint, typecheck and production build passed. These tests use isolated fixture wallets and PostgreSQL; genuine live login and holder-to-friend acceptance are not claimed.
+- No environment-file edits or credential output were made for this fix.

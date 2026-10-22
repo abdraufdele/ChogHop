@@ -32,7 +32,7 @@
 
 - [x] Public practice completed and restored after refresh, including a fresh 320px browser session.
 - [x] Deployed practice completed at 320px using keyboard radio controls; 320px and 390px layouts had no horizontal overflow. This is viewport emulation, not a physical-phone claim.
-- [ ] A real non-holder wallet can sign in; it cannot claim another wallet's Chog.
+- [x] Operator confirmed real-wallet sign-in and the expected rejection for genuine Chog #801, whose finalized owner was independently checked to be different.
 - [x] Deployed holder page says HOLDER RELAY; inspected page had no fixture bridge script or test-actor label. Practice is visibly simulated.
 - [ ] Owner has the public app/source links, short instructions, actual Runner wallet address and optional recording consent request.
 - [ ] Fresh invitations are created on the final origin, not copied from localhost or another hostname.
@@ -110,4 +110,11 @@ Deployment preparation verification: all 87 tests, lint and typecheck passed aga
 - Volunteer handout now contains links, a proposed real Runner address awaiting confirmation, separate login/permission explanations, a direct-reply problem-report process and an explicit recording choice. Participants, consent and scheduling remain pending.
 - The previously shared service credential remains in use at the operator prior request. Rotation is not marked complete; the operator must perform the credential change and enter the replacement privately before treating that original release requirement as met.
 
-Identity compatibility verification: all 95 unit/database tests, all 30 desktop/mobile browser checks, lint, typecheck and production build passed with nested-claim fixtures. Genuine non-owner rejection remains pending a production retry. No migration or local environment edit is required.
+Identity compatibility verification: all 95 unit/database tests, all 30 desktop/mobile browser checks, lint, typecheck and production build passed with nested-claim fixtures. The subsequent operator production retry confirmed the expected non-owner rejection. No migration or local environment edit is required.
+
+## Confirmed pre-holder outcome
+
+- Production identity fix 1999ad0 reached Ready at https://choghop.vercel.app. After refresh, the operator retried genuine Chog #801 and reported: This wallet is not the verified current owner of this Chog. This completes the real sign-in/non-owner rejection gate; it is not successful holder authorization.
+- Public site, configuration, practice/persistence, mobile viewport/keyboard, real sign-in, non-owner rejection and visible non-fixture holder entry have now passed the recorded pre-volunteer checks. No new migrations are required.
+- Still human-dependent: confirm the proposed Runner address before an invitation is signed; recruit a consenting genuine holder and record their own token ID/public address; arrange the session and optional recording consent; complete the holder-to-friend positive acceptance. Create fresh 30-minute invitations only during the session on the canonical origin.
+- Credential rotation remains an outstanding original release requirement: the existing service-role key was retained at the operator earlier instruction. No replacement has been provided or claimed.

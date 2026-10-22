@@ -142,7 +142,7 @@ Holder passports, immutable contributor records, receipts, runs and events live 
 ## Audits and Verification
 
 
-These are internal engineering checks, not an independent third-party security audit. The last completed application verification passed **87 unit/database tests and 28 desktop/mobile browser checks**, plus separate fixture-preview checks at **1440px and 320px**. Lint, typecheck and the production build passed. These counts describe the recorded verification run, not a claim that tests were rerun for every documentation edit.
+These are internal engineering checks, not an independent third-party security audit. The last completed application verification passed **95 unit/database tests and 30 desktop/mobile browser checks**, plus separate fixture-preview checks at **1440px and 320px**. Lint, typecheck and the production build passed. These counts describe the recorded verification run, not a claim that tests were rerun for every documentation edit.
 
 | Area | What was tested |
 |---|---|
@@ -153,9 +153,12 @@ These are internal engineering checks, not an independent third-party security a
 | Recovery UI | Loading, empty passport, rejected signature, network failure, readable expired/revoked tickets and blocked invalid actions |
 | Accessibility/mobile | 320px layout, keyboard radio controls, focus states, reduced motion, no horizontal clipping and inspected mobile screenshots |
 | Fixture handoff | Keeper logout, switch to the named test Runner, explicit simulated offline owner, stale-session cleanup and unrelated-cookie preservation |
+| Wallet authentication | Optional wallet event methods, safe sign-in errors, hosted nested wallet claims, wrong chain/provider/subject, conflicting and ambiguous identities |
 | Build quality | Unit/database suite, browser suite, lint, TypeScript checks and optimized production build |
 
-The production desktop/mobile suite covers both practice treatments, refreshed runs, the owner-offline relay and follow-up, empty passports, loading feedback, rejected signatures, network failures, and expired/revoked tickets. Presentation-only ended-ticket cases use explicit response fixtures; permission enforcement and award races are tested separately against the real SQL. The mobile action tray stays in document flow so it cannot cover the clue controls. Browser screenshots are written to ignored `test-results/`.
+The local production-build desktop/mobile suite covers both practice treatments, refreshed runs, the owner-offline relay and follow-up, empty passports, loading feedback, rejected signatures, network failures, and expired/revoked tickets. Presentation-only ended-ticket cases use explicit response fixtures; permission enforcement and award races are tested separately against the real SQL. The mobile action tray stays in document flow so it cannot cover the clue controls. Browser screenshots are written to ignored `test-results/`.
+
+The public site is deployed at https://choghop.vercel.app. Public practice completion/refresh and 320px/390px viewport checks passed; the operator confirmed a real-wallet sign-in and rejection of a genuine Chog owned by another wallet. Successful real-holder authorization, guest completion and the resulting live passport/receipt remain pending. See [release checklist](RELEASE_CHECKLIST.md) and [holder test handout](HOLDER_TEST_AND_SUBMISSION.md) for the observed results and next session.
 
 With the fixture preview running, `node e2e/support/check-preview.mjs` separately checks the actual one-button Keeper logout and Runner switch at 1440px and 320px, keyboard focus, reduced motion, stale-session cleanup and preservation of unrelated cookies. This script requires installed Chrome and uses only disposable local fixture records. Stop the preview before `npm run test:e2e`, which owns ports 3000 and 54329. The checked body, muted, ticket, action and success foreground/background pairs exceed 4.5:1 contrast; this is not a claim of a formal accessibility audit.
 

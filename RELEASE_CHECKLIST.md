@@ -11,7 +11,7 @@
 ## Account and configuration prerequisites
 
 - [x] GitHub CLI authentication verified as abdraufdele; initial repository visibility is private.
-- [ ] Push the reviewed branch to the intended repository.
+- [x] Reviewed branch pushed to private repository https://github.com/abdraufdele/ChogHop (default branch: codex/puzzle-engine).
 - [x] Personal Vercel account abdraufdele selected; choghop project created and linked.
 - [ ] Supabase project is confirmed; Ethereum Web3 sign-in is enabled.
 - [ ] Previously shared service-role credential has been rotated; enter the replacement directly into private Vercel settings.
@@ -72,5 +72,7 @@ Local preparation verification on October 22: lint, typecheck and production bui
 - Vercel CLI 65.1.0 authenticated as abdraufdele; choghop project creation and linking verified. GitHub CLI authentication also verified.
 - Vercel CLI unexpectedly appended an OIDC-token section to .env.local during linking. That generated section was removed without printing its value or changing existing settings. Future deployment steps must not pull development environment settings.
 - The existing local publishable key uses SUPABASE_PUBLISHABLE_KEY; production must expose the same public key under the application-required NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY name.
-- The local service-role value still matches the previously shared credential. Do not upload it; await the replacement locally or direct entry into private Vercel Production settings.
+- The operator explicitly chose to retain the previously shared service-role credential for this deployment. It is stored only as a server-side Production Secret; no NEXT_PUBLIC service credential exists. Credential rotation remains outstanding.
 - No public deployment or real-wallet acceptance is claimed by these account/setup checks.
+
+Deployment preparation verification: all 87 tests, lint and typecheck passed again; slice 6 is committed as aee9d55. Vercel project runtime is confirmed 22.x and the assigned production hostname is choghop.vercel.app. Required Production environment variable names are configured; the public publishable key is mapped from its existing local name without editing the file. Source deployment attempts failed before upload with fetch/socket errors. Git-based fallback requires the owner to approve the Vercel GitHub App for only ChogHop. No hosted practice/console acceptance is claimed yet.

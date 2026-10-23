@@ -190,14 +190,6 @@ The current product offers short cooperative play, asynchronous participation, l
 
 The puzzle could technically exist without NFTs. The NFT is essential to the implemented holder authorization/history model, not mathematically necessary to the puzzle. No NFT trait currently changes the puzzle; the previous Keeper choice selects the follow-up. Present this as meaningful but bounded NFT utility. Do not claim the app permission is enforced by a custom contract.
 
-These rows assess the six criteria provided by the entrant; they are not independent confirmation of the organizer's current rubric. Confirm whether $CHOG use is mandatory, optional, or a separate bonus before submitting. If mandatory, the current MVP does not meet that particular requirement. Do not quietly add token payouts or approvals just to imply compliance.
-
-## Where the project goes next
-
-Before the deadline, prioritize genuine-holder verification, a stable deployed URL, several uncoached playtests and a clear three-minute demo. Fix any blocker they uncover before adding features. The agreed working deadline is October 23, 13:00 Africa/Lagos; reconfirm the organizer's deadline and submission fields.
-
-After the hackathon, let evidence decide: if players cannot explain the puzzle, improve onboarding; if invited friends drop out, simplify the invitation and wallet flow; if people finish both rooms and request more, author a small new chapter pack and measure voluntary returns. After the core release gate passes, the previously planned contribution replay and hint ladder can be evaluated. Neither is currently shipped. An organizer pilot could test recurring community adventures and possible paid content later; do not present an untested business model as product-market fit. Oracle, Dynamic, custom contracts and token payouts remain outside the approved MVP.
-
 ## Simple testing instructions
 
 For a nontechnical walkthrough, use the fixture preview. It needs no real wallet, NFT, cloud credentials or token purchase:

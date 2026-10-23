@@ -118,3 +118,12 @@ Identity compatibility verification: all 95 unit/database tests, all 30 desktop/
 - Public site, configuration, practice/persistence, mobile viewport/keyboard, real sign-in, non-owner rejection and visible non-fixture holder entry have now passed the recorded pre-volunteer checks. No new migrations are required.
 - Still human-dependent: confirm the proposed Runner address before an invitation is signed; recruit a consenting genuine holder and record their own token ID/public address; arrange the session and optional recording consent; complete the holder-to-friend positive acceptance. Create fresh 30-minute invitations only during the session on the canonical origin.
 - Credential rotation remains an outstanding original release requirement: the existing service-role key was retained at the operator earlier instruction. No replacement has been provided or claimed.
+
+## Credential replacement deployment — October 23, 2026
+
+- Operator reported saving the replacement credential directly in Vercel Production. Redeployed without reading or printing credential values; `.env.local` was not modified.
+- Deployment dpl_GVPRU6Y8hRdSR5JDEiP8x2kVYywK reached Ready and serves https://choghop.vercel.app (deployment URL: https://choghop-3p0t4l5hp-abdraufdele.vercel.app).
+- A fresh public practice completed Keeper signal preparation, Runner handoff and correct restoration; its explicitly simulated passport returned after refresh. This exercises hosted database reads and writes with the deployed configuration. No real NFT award was created.
+- Browser error entries were limited to the existing MetaMask provider conflict with another wallet extension; no application-source errors appeared in the inspected log. A single-wallet-extension browser profile remains recommended for the real session.
+- Credential retirement is not confirmed: creating/replacing a key does not revoke the exposed legacy service-role key. The operator must deactivate the legacy key after migrating any other consumers, then the public database flow must be checked again.
+- Operator selected a different Runner address, still to be supplied. Their report that they do not have a phone/holder is awaiting clarification; physical-device testing and genuine-holder acceptance remain pending. No new migrations or code changes were required.

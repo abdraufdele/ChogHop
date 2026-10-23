@@ -284,6 +284,10 @@ For an optional local real-service rehearsal, use the normal `npm run dev`, not 
 
 Official operational references: [Supabase Web3 sign-in](https://supabase.com/docs/guides/auth/auth-web3), [Supabase allowed redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls), [Vercel Git deployment](https://vercel.com/docs/git), [Vercel environment variables](https://vercel.com/docs/environment-variables), [Vercel environments](https://vercel.com/docs/deployments/environments), [Vercel Node versions](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions), and [Vercel deployment protection](https://vercel.com/docs/deployment-protection). Product behavior and dependency versions above were checked against this repository; no new live acceptance result is claimed.
 
+## Contributors
+
+- [@abdraufdele](https://github.com/abdraufdele) - Project creator and contributor.
+
 ## License
 
 ChogHop's original project code and documentation are licensed under the [MIT License](LICENSE), copyright 2026 ChogHop contributors. You may use, modify and redistribute the software subject to that license's notice requirements.

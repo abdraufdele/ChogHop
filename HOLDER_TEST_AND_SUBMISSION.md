@@ -71,7 +71,7 @@ Record genuine wallet steps only after successful acceptance and recording conse
 
 **Chog integration:** Chog NFT ownership is required to create a genuine relay and associate its history. The friend does not need to own a Chog. The MVP does not use the $CHOG fungible token.
 
-**Links:** Public app https://choghop.vercel.app ; source https://github.com/abdraufdele/ChogHop (currently private: arrange judge access or choose public visibility before submission); demo video link Pending.
+**Links:** Public app https://choghop.vercel.app ; source https://github.com/abdraufdele/ChogHop (public; judge access does not require a GitHub invitation); demo video link Pending.
 
 **License:** MIT for original project code; bundled font licenses are preserved.
 
@@ -83,17 +83,22 @@ The signed-in Chogathon dashboard form was inspected on October 22; nothing was 
 
 - Banner ready: submission/choghop-banner.png (1600×900), with editable SVG beside it. It uses original ChogHop observatory artwork.
 - Tech Stack field: Next.js App Router, TypeScript, Tailwind CSS, React, wagmi, viem, TanStack Query, Supabase Auth Web3 and Postgres with RLS, layered SVG/CSS, Vitest, Playwright, Vercel, Monad mainnet.
-- Judge Access Instructions draft: Open https://choghop.vercel.app for wallet-free practice. No wallet or NFT is required for that mode; its passport is a labeled sample. Open /relay for genuine Chog Genesis ownership verification on Monad mainnet (143). The owner must hold the selected Chog; their invited friend may use another existing wallet without owning a Chog. This uses identity and scoped permission signatures, not NFT spending approvals. Genuine holder acceptance is still pending; replace this statement only after an observed successful test. The repository is private; organizer GitHub access must be arranged before submission if needed.
+- Judge Access Instructions draft: Open https://choghop.vercel.app for wallet-free practice. No wallet or NFT is required for that mode; its passport is a labeled sample. Open /relay for genuine Chog Genesis ownership verification on Monad mainnet (143). The owner must hold the selected Chog; their invited friend may use another existing wallet without owning a Chog. This uses identity and scoped permission signatures, not NFT spending approvals. Genuine holder acceptance is still pending; replace this statement only after an observed successful test. The source repository is public and can be inspected without a GitHub invitation. The complete fixture demo is explicitly simulated; genuine holder acceptance remains pending.
 - Optional Go-to-Market draft: Start with small Chog-holder/friend playtests in the existing community. Measure completion, confusion, invitation acceptance and voluntary return for the remembered second chapter. Use feedback to improve onboarding and chapter design. Retention and demand are hypotheses; no traction or revenue is claimed.
-- Still required from the owner: real test participants, their wallet signatures, recording consent, an actual uploaded demo video URL, and a decision about judge access to the private repository. Review the final form before publishing.
+- Still required from the owner: real test participants, their wallet signatures, recording consent, an actual uploaded demo video URL, and final review of the submission. Source repository access is now public. Review the final form before publishing.
 
 ## Volunteer session handout
 
-- Public practice: https://choghop.vercel.app ; real-holder entry: https://choghop.vercel.app/relay ; source: https://github.com/abdraufdele/ChogHop (private; request access from the organizer).
-- Proposed Runner: 0x4cC35bE54c358146E7b71E58f965532193848FDd — this is the public sign-in address supplied by the operator, not a fixture. Confirm that this is the intended Runner before the holder signs an invitation.
+- Public practice: https://choghop.vercel.app ; real-holder entry: https://choghop.vercel.app/relay ; source: https://github.com/abdraufdele/ChogHop (public).
+- Runner: awaiting a different public address selected by the operator. The previous sign-in address is not confirmed as Runner. Do not issue an invitation until the intended address is supplied.
 - Before starting, ask: Would you prefer testing only, or are you also happy for us to record and publish the demo? Recording is optional. Do not record until consent is explicit.
 - Schedule directly with the volunteer for a 10–15 minute session. Create the invitation during that session because it expires after 30 minutes. No session has been scheduled yet.
 - Holder: open the real-holder link, connect the wallet holding the NFT, approve the login signature and select your own actual token ID. Read the chart and prepare a signal. Enter the confirmed Runner address above and approve the separate one-run, one-action invitation signature. Copy the fresh link, then sign out.
 - Runner: open that link in your own wallet browser, sign in with the exact named wallet, infer the two example transformations and restore one lantern. No Chog ownership is required for the Runner.
 - Report problems by replying to the person who invited you. Include the displayed error, Keeper/Runner role, device/browser, page path and approximate WAT time. Do not send seed phrases, private keys, session cookies, recovery screens or raw signed messages.
 - Together: check one passport entry for this NFT/run, both credits, persistence after refresh and the owner receipt. Treat the passport as app-managed history. Record outcomes in RELEASE_CHECKLIST.md.
+
+
+## Deadline demo without a holder
+
+Use [submission/DEMO_RUNBOOK.md](submission/DEMO_RUNBOOK.md) for a 2:55 recording sequence, exact fixture rehearsal steps and paste-ready validation disclosure. A consenting holder is not available; do not claim successful real-holder acceptance. Record the complete local fixture relay with its mode labels visible, alongside public practice. The source repository is now public. A physical phone can test practice without MetaMask. Video recording/upload and final submission are still pending.

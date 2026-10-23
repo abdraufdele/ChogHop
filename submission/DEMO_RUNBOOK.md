@@ -16,7 +16,7 @@ Use a maximum 2:55 video. No genuine holder is available yet. Demonstrate workin
 4. Use the supplied guest wallet address, sign the scoped permission with the fixture bridge and show the invitation's named guest, one move and expiry.
 5. Click Pass to test Runner · owner offline. Point out that the acting fixture identity changed and the Keeper session ended; this is a simulation of an offline owner. Sign in as Runner and open the ticket.
 6. Read both mapping examples. Select Star and South, then restore the lantern. Show the redeemed ticket and the one passport entry crediting both people.
-7. Refresh to show persisted fixture history. Click Return as test Keeper, sign in, reload the run, show the contribution receipt and open The Returning Light. After a Direct first choice, its Keeper answer is Moon/East. You only need to show that the remembered follow-up exists; finishing it is optional for the video.
+7. Refresh, then click Open invitation to load the persisted fixture result; confirm the same single entry returns. Click Return as test Keeper, sign in, reload the run, show the contribution receipt and open The Returning Light. After a Direct first choice, its Keeper answer is Moon/East. You only need to show that the remembered follow-up exists; finishing it is optional for the video.
 8. If rehearing already completed a run, create a new run using the UI or restart the fixture launcher before the final take. Do not hide a used ticket or present an old run as fresh.
 
 ## Exact recording sequence and narration
@@ -40,7 +40,7 @@ Keep a caption visible during the local portion: **FIXTURE DEMO — test wallets
 1. Use a screen recorder already installed on your PC (Windows Snipping Tool screen recording is sufficient). Record the Chrome page, not the entire desktop; narrate live if your recorder supports microphone, or add narration/captions afterward. Export MP4 and check that it is no longer than three minutes.
 2. Upload to your own YouTube as unlisted or Google Drive with viewer access. Test the link in a signed-out browser. Do not paste credentials or private participant information into the video or submission.
 3. Use submission/choghop-banner.png and the copy in HOLDER_TEST_AND_SUBMISSION.md. App link: https://choghop.vercel.app. Demo link must be the actual uploaded video, never a placeholder.
-4. The GitHub repository is private. Choose either public visibility or arrange organizer access; do not claim judges can read it until verified.
+4. The GitHub repository is public at https://github.com/abdraufdele/ChogHop; visibility was verified after the creator authorized publication. Judges do not need a repository invitation.
 5. Include the disclosure below in Description or Judge Access Instructions. Review the completed hackathon form before its final submission.
 
 ## Paste-ready validation disclosure
@@ -52,5 +52,5 @@ The public application provides wallet-free practice and a genuine Chog Genesis 
 - Retire the exposed legacy Supabase credential after its replacement has been tested, then request a final public persistence check.
 - Test practice and refresh on a physical phone; no wallet extension is needed. If unavailable, disclose that only mobile viewport testing was performed.
 - Record, review and upload the actual demo; provide its accessible URL.
-- Decide judge access to the source repository and approve the final submission.
+- Review the publicly accessible source link and approve the final submission.
 - A future consenting holder test remains a release-validation gap; do not disable or fake production ownership to conceal it.
